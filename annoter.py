@@ -7,40 +7,42 @@ width = 640
 height = 480
 
 def findBBox(onnx_model_path, img, img_resize, threshold):
-  session = onnxruntime.InferenceSession(onnx_model_path)
-  input_name = session.get_inputs()[0].name
-  # img = cv2.imread(img_path)
-  h, w, c = img.shape
-  img_resized = cv2.resize(img ,(img_resize, img_resize))
-  img_data = np.reshape(img_resized, (1, img_resize, img_resize, 3))
-  img_data = img_data.astype('uint8')
-  ort_inputs = {input_name: img_data}
-  ort_outs = session.run(None, ort_inputs)
-  # bbox = ort_outs[1][0][1]
-  # print(ort_outs[4][0])
-  bbox_list = []
-  class_list = []
-  confidence = []
-  c = 0
-  for i in ort_outs[4][0]:
-    if i > threshold:
-      bbox = ort_outs[1][0][c]
-      ymin = (bbox[0])
-      xmin = (bbox[1])
-      ymax = (bbox[2])
-      xmax = (bbox[3])
-      # cv2.rectangle(img, (xmin, ymin), (xmax, ymax), (0, 255, 0), 2)
-      xmin, ymin, xmax, ymax = int(xmin*w), int(ymin*h), int(xmax*w), int(ymax*h)
-      bbox_list.append([xmin, ymin, xmax, ymax])
+  
+    # Saved ONNX model
+    session = onnxruntime.InferenceSession(onnx_model_path)
+    input_name = session.get_inputs()[0].name
 
-      # Detection Classes
-      class_list.append(ort_outs[2][0][c])
+    # Image
+    h, w, c = img.shape
+    img_resized = cv2.resize(img ,(img_resize, img_resize))
+    img_data = np.reshape(img_resized, (1, img_resize, img_resize, 3))
+    img_data = img_data.astype('uint8')
+    ort_inputs = {input_name: img_data}
+    ort_outs = session.run(None, ort_inputs)
 
-      # confidence
-      confidence.append(i)
+    bbox_list = []
+    class_list = []
+    confidence = []
+    c = 0
+    for i in ort_outs[4][0]:
+        if i > threshold:
+            bbox = ort_outs[1][0][c]
+            ymin = (bbox[0])
+            xmin = (bbox[1])
+            ymax = (bbox[2])
+            xmax = (bbox[3])
+            # cv2.rectangle(img, (xmin, ymin), (xmax, ymax), (0, 255, 0), 2)
+            xmin, ymin, xmax, ymax = int(xmin*w), int(ymin*h), int(xmax*w), int(ymax*h)
+            bbox_list.append([xmin, ymin, xmax, ymax])
 
-      c = c + 1
-  return bbox_list, class_list, confidence
+            # Detection Classes
+            class_list.append(ort_outs[2][0][c])
+
+            # confidence
+            confidence.append(i)
+
+        c = c + 1
+    return bbox_list, class_list, confidence
 
 
 def findClass(class_id):
