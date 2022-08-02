@@ -51,28 +51,30 @@ def findClass(class_id):
   return class_name
 
 
-img = cv2.imread('img/WhatsApp Image 2022-06-16 at 8.05.18 PM (1).jpeg')
-bbox_list, class_list, confidence = findBBox('model_7.onnx', img, 320, 0.4)
+
+if __name__=='__main__':
+    img = cv2.imread('img/WhatsApp Image 2022-06-16 at 8.05.18 PM (1).jpeg')
+    bbox_list, class_list, confidence = findBBox('model_7.onnx', img, 320, 0.4)
 
 
-for bbox, id in zip(bbox_list, class_list):
-    cv2.rectangle(
-        img, (bbox[0], bbox[1]),
-        (bbox[2], bbox[3]),
-        (0, 255, 0), 3
-    )
-    cv2.putText(
-        img, f'{findClass(id)}',
-        (bbox[0], bbox[1]),
-        cv2.FONT_HERSHEY_PLAIN, 3,
-        (0, 255, 255), 3
-    )
+    for bbox, id in zip(bbox_list, class_list):
+        cv2.rectangle(
+            img, (bbox[0], bbox[1]),
+            (bbox[2], bbox[3]),
+            (0, 255, 0), 3
+        )
+        cv2.putText(
+            img, f'{findClass(id)}',
+            (bbox[0], bbox[1]),
+            cv2.FONT_HERSHEY_PLAIN, 3,
+            (0, 255, 255), 3
+        )
 
 
-img = cv2.resize(img, (width, height))
+    img = cv2.resize(img, (width, height))
 
-cv2.imshow('Img', img)
-if cv2.waitKey(0) & 0xFF==ord('q'):
-    cv2.destroyAllWindows()
+    cv2.imshow('Img', img)
+    if cv2.waitKey(0) & 0xFF==ord('q'):
+        cv2.destroyAllWindows()
 
 
