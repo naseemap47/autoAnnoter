@@ -7,8 +7,7 @@ width = 640
 height = 480
 
 def findBBox(onnx_model_path, img, img_resize, threshold):
-  
-    # Saved ONNX model
+  # Saved ONNX model
     session = onnxruntime.InferenceSession(onnx_model_path)
     input_name = session.get_inputs()[0].name
 
@@ -19,7 +18,6 @@ def findBBox(onnx_model_path, img, img_resize, threshold):
     img_data = img_data.astype('uint8')
     ort_inputs = {input_name: img_data}
     ort_outs = session.run(None, ort_inputs)
-
     bbox_list = []
     class_list = []
     confidence = []
