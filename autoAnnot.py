@@ -6,12 +6,12 @@ import os
 
 
 ap = argparse.ArgumentParser()
-ap.add_argument("-i", "--dataset", type=str, required=True,
-                help="path to dataset/dir")
 ap.add_argument("-x", "--xml", action='store_true',
                 help="to annotate in XML format")
 ap.add_argument("-y", "--yolo", action='store_true',
                 help="to annotate in YOLO format(.txt)")
+ap.add_argument("-i", "--dataset", type=str, required=True,
+                help="path to dataset/dir")
 ap.add_argument("-m", "--model", type=str, required=True,
                 help="path to ONNX model")
 ap.add_argument("-s", "--size", type=str, required=True,
