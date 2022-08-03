@@ -1,4 +1,4 @@
-from utils import findBBox, save_xml, save_yolo
+from utils import findBBox, save_xml, save_yolo, read_txt_lines
 import cv2
 import glob
 import os
@@ -12,6 +12,8 @@ ap.add_argument("-y", "--yolo", action='store_true',
                 help="to annotate in YOLO format(.txt)")
 ap.add_argument("-i", "--dataset", type=str, required=True,
                 help="path to dataset/dir")
+ap.add_argument("-t", "--classes", type=str, required=True,
+                help="path to classes.txt")
 ap.add_argument("-m", "--model", type=str, required=True,
                 help="path to ONNX model")
 ap.add_argument("-s", "--size", type=int, required=True,
@@ -24,6 +26,7 @@ args = vars(ap.parse_args())
 XML = args['xml']
 YOLO = args['yolo']
 path_to_dir = args["dataset"]
+path_to_txt = args['classes']
 onnx_model_path = args['model']
 img_size = args['size']
 detect_conf = args['confidence']
@@ -41,7 +44,9 @@ if XML:
         bbox_list, class_list, confidence = findBBox(
             onnx_model_path, image, img_size, detect_conf)
         folder_name, file_name = os.path.split(img)
-        save_xml(folder_name, file_name, img, w, h, c, bbox_list, class_list)
+        class_names = read_txt_lines(path_to_txt)
+        save_xml(folder_name, file_name, img, w, h, c,
+                 bbox_list, class_list, class_names)
         print(f'Successfully Annotated {file_name}')
 
     print('XML-Auto_Annotation Successfully Completed')
