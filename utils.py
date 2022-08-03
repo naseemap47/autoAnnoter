@@ -7,6 +7,20 @@ from lxml import etree
 DEFAULT_ENCODING = 'utf-8'
 
 
+# Read Classes.txt
+def read_txt_lines(path_to_txt):
+    with open(path_to_txt, 'r') as f:
+        lines = f.readlines()
+        lines = [line.rstrip() for line in lines]
+    return lines
+
+
+# Conver into Class Names
+def findClass(class_id, class_names):
+    class_name = class_names[int(class_id)-1]
+    return class_name
+
+
 # to get bounding box from ONNX model
 def findBBox(onnx_model_path, img, img_resize, threshold):
   # Load Saved ONNX model
@@ -46,17 +60,8 @@ def findBBox(onnx_model_path, img, img_resize, threshold):
     return bbox_list, class_list, confidence
 
 
-# Conver into Class Names
-def findClass(class_id):
-    if class_id == 1:
-        class_name = 'pothole'
-    else:
-        class_name = 'patch'
-    return class_name
-
-
 # function to convert XML file
-def save_xml(folder_name, file_name, path_txt, width_n, height_n, depth_n, obj_list, class_list):
+def save_xml(folder_name, file_name, path_txt, width_n, height_n, depth_n, obj_list, class_list, class_names):
     data = ET.Element('annotation')
     folder = ET.SubElement(data, 'folder')
     filename = ET.SubElement(data, 'filename')
@@ -97,7 +102,7 @@ def save_xml(folder_name, file_name, path_txt, width_n, height_n, depth_n, obj_l
         xmax = ET.SubElement(bndbox, 'xmax')
         ymax = ET.SubElement(bndbox, 'ymax')
 
-        name.text = f'{findClass(class_id)}'
+        name.text = f'{findClass(class_id, class_names)}'
         pose.text = 'Unspecified'
         truncated.text = '0'
         difficult.text = '0'
