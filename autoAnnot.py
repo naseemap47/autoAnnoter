@@ -4,6 +4,7 @@ import argparse
 import glob
 import os
 from make_xml import save_xml
+from anotYolo import save_yolo
 
 
 
@@ -38,4 +39,16 @@ if XML:
         print(f'Successfully Annotated {file_name}')
 
     print('XML-Auto_Annotation Successfully Completed')
+
+# YOLO Annotation
+if YOLO:
+    for img in img_list:
+        image = cv2.imread(img)
+        h, w, c = image.shape
+        bbox_list, class_list, confidence = findBBox(onnx_model_path, image, 320, 0.4)
+        folder_name, file_name = os.path.split(img)
+        save_yolo(folder_name, file_name, w, h, bbox_list, class_list)
+        print(f'Successfully Annotated {file_name}')
+
+    print('YOLO-Auto_Annotation Successfully Completed')
 
