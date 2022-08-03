@@ -1,8 +1,8 @@
 from utils import findBBox, save_xml, save_yolo
 import cv2
-import argparse
 import glob
 import os
+import argparse
 
 
 ap = argparse.ArgumentParser()
@@ -14,19 +14,20 @@ ap.add_argument("-i", "--dataset", type=str, required=True,
                 help="path to dataset/dir")
 ap.add_argument("-m", "--model", type=str, required=True,
                 help="path to ONNX model")
-ap.add_argument("-s", "--size", type=str, required=True,
+ap.add_argument("-s", "--size", type=int, required=True,
                 help="Size of image used to train the model")
-ap.add_argument("-c", "--confidence", type=str, required=True,
+ap.add_argument("-c", "--confidence", type=float, required=True,
                 help="Model detection Confidence (0<confidence<1)")
 
 
 args = vars(ap.parse_args())
+XML = args['xml']
+YOLO = args['yolo']
 path_to_dir = args["dataset"]
 onnx_model_path = args['model']
 img_size = args['size']
 detect_conf = args['confidence']
-XML = args['xml']
-YOLO = args['yolo']
+
 
 img_list = glob.glob(os.path.join(path_to_dir, '*.jpg')) + \
     glob.glob(os.path.join(path_to_dir, '*.jpeg')) + \
