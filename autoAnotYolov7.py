@@ -1,39 +1,43 @@
 import cv2
 from utils.hubconf import custom
+import argparse
+import glob
+import os
+from anot_utils import save_yolo, get_BBoxYOLOv7
 
+
+ap = argparse.ArgumentParser()
+ap.add_argument("-i", "--dataset", type=str, required=True,
+                help="path to dataset/dir")
+ap.add_argument("-m", "--model", type=str, required=True,
+                help="path to best.pt (YOLOv7) model")
+# ap.add_argument("-s", "--size", type=int, required=True,
+#                 help="Size of image used to train the model")
+ap.add_argument("-c", "--confidence", type=float, required=True,
+                help="Model detection Confidence (0<confidence<1)")
+
+
+args = vars(ap.parse_args())
+path_to_dir = args["dataset"]
+path_or_model = args['model']
+# img_size = args['size']
+detect_conf = args['confidence']
 
 # Load YOLOv7 Model (best.pt)
-model = custom(path_or_model='best.pt')  # custom example
+model = custom(path_or_model=path_or_model)  # custom example
 
-img = cv2.imread('/home/naseem/My-Project/toolbuilder/autoAnnoter/img/WhatsApp Image 2022-06-16 at 8.05.04 PM.jpeg')
-results = model(img)
+img_list = glob.glob(os.path.join(path_to_dir, '*.jpg')) + \
+    glob.glob(os.path.join(path_to_dir, '*.jpeg')) + \
+    glob.glob(os.path.join(path_to_dir, '*.png'))
 
-# Bounding Box
-box = results.pandas().xyxy[0]
-x = box['xmin']
-y = box['ymin']
-w = box['xmax'] - x  # x+w
-h = box['ymax'] - y  # y+h
-confidence = box['confidence']
-Class = box['class']
-name = box['name']
+for img in img_list:
+    folder_name, file_name = os.path.split(img)
+    image = cv2.imread(img)
+    h, w, c = image.shape
+    bbox_list, class_list, confidence = get_BBoxYOLOv7(image, model, detect_conf)
+    save_yolo(folder_name, file_name, w, h, bbox_list, class_list)
 
-# Bounding Box Parameters
-para = []
-for i in box.index:
-    x, y, w, h, c, n = int(box['xmin'][i]), int(box['ymin'][i]), int(box['xmax'][i] - box['xmin'][i]), \
-                        int(box['ymax'][i] - box['ymin'][i]), box['confidence'][i], (box['name'][i])
-    para.append([x, y, w, h, c, n])
+    print(f'Successfully Annotated {file_name}')
 
-# print(para)
-
-for p in para:
-    cv2.rectangle(
-        img, (x, y), ((x+w), (y+h)),
-        (0, 255, 255), 3
-    )
-
-cv2.imshow('Image', img)
-if cv2.waitKey(0) & 0xFF==ord('q'):
-    cv2.destroyAllWindows()
+print('YOLOv7-Auto_Annotation Successfully Completed')
 
