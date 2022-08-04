@@ -150,3 +150,25 @@ def save_yolo(folder_name, file_name, w, h, bbox_list, class_list):
                        (int(class_index)-1, x_center, y_center, width, height))
 
     print(f'Successfully Created {txt_name}')
+
+
+def get_BBoxYOLOv7(img, yolo_model, detect_conf):
+    
+    # Load YOLOv7 model on Image
+    results = yolo_model(img)
+
+    # Bounding Box
+    box = results.pandas().xyxy[0]
+    bbox_list = []
+    class_list = []
+    confidence = []
+    for i in box.index:
+        xmin, ymin, xmax, ymax, conf, Class, name = int(box['xmin'][i]), int(box['ymin'][i]), int(box['xmax'][i]), \
+                            int(box['ymax'][i]), box['confidence'][i], box['class'], (box['name'][i])
+        # detect_conf
+        if detect_conf>conf:
+            bbox_list.append([xmin, ymin, xmax, ymax])
+            class_list.append(Class+1)
+            confidence.append(conf)
+    return bbox_list, class_list, confidence
+
