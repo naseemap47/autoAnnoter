@@ -1,5 +1,4 @@
 import cv2
-import onnxruntime
 import numpy as np
 import os
 import xml.etree.ElementTree as ET
@@ -23,10 +22,9 @@ def findClass(class_id, class_names):
 
 
 # to get bounding box from ONNX model
-def findBBox(onnx_model_path, img, img_resize, threshold):
-  # Load Saved ONNX model
-    session = onnxruntime.InferenceSession(onnx_model_path)
-    input_name = session.get_inputs()[0].name
+def findBBox(onnx_session, img, img_resize, threshold):
+  # onnx session
+    input_name = onnx_session.get_inputs()[0].name
 
     # Image
     h, w, c = img.shape
@@ -34,7 +32,7 @@ def findBBox(onnx_model_path, img, img_resize, threshold):
     img_data = np.reshape(img_resized, (1, img_resize, img_resize, 3))
     img_data = img_data.astype('uint8')
     ort_inputs = {input_name: img_data}
-    ort_outs = session.run(None, ort_inputs)
+    ort_outs = onnx_session.run(None, ort_inputs)
     bbox_list = []
     class_list = []
     confidence = []
