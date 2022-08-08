@@ -134,8 +134,8 @@ def save_yolo(folder_name, file_name, w, h, bbox_list, class_list):
     out_file = open(path_to_save, 'w')
     for box, class_index in zip(bbox_list, class_list):
         x_min = box[0]
-        x_max = box[1]
-        y_min = box[2]
+        y_min = box[1]
+        x_max = box[2]
         y_max = box[3]
 
         x_center = float((x_min + x_max)) / 2 / w
