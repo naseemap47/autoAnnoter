@@ -1,10 +1,20 @@
 # autoAnnoter
-autoAnnoter its a tool to auto annotate data using a exisiting model
+autoAnnoter its a tool to auto annotate data using a exisiting model<br>
+You can use python file to RUN AutoAnnotor<br>
+**OR**<br>You can use **Streamlit** Dashboard
 
 ## Clone this GitHub Repository
 ```
 git clone https://github.com/naseemap47/autoAnnoter.git
+cd autoAnnoter
+pip3 install -r requirements.txt
 ```
+
+## RUN Streamlit Dashboard
+```
+streamlit run app.py
+```
+
 ## For XML
 ```
 python3 autoAnnot.py -x -i <PATH_TO_DATA> -c <PATH_TO_classes.txt> -m <ONNX_MODEL_PATH> -s <SIZE_OF_IMAGE_WHEN_TRAIN_YOUR_MODEL> -conf <MODEL_OBJCET_DETECTION_CONFIDENCE>
