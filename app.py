@@ -43,6 +43,7 @@ if options=='ONNX':
     # ONNX Model
     if load_model:
         onnx_session = onnxruntime.InferenceSession(onnx_model_path)
+        st.success('ONNX Model Loaded Successfully')
 
         img_list = glob.glob(os.path.join(path_to_dir, '*.jpg')) + \
             glob.glob(os.path.join(path_to_dir, '*.jpeg')) + \
@@ -107,19 +108,21 @@ if options=='YOLOv7':
 
     # Load YOLOv7 Model (best.pt)
     if load_model:
-        model = custom(path_or_model=yolov7_model_path)  # custom example
+        model = custom(path_or_model=yolov7_model_path)
+        st.success('YOLOv7 Model Loaded Successfully')
 
         img_list = glob.glob(os.path.join(path_to_dir, '*.jpg')) + \
             glob.glob(os.path.join(path_to_dir, '*.jpeg')) + \
             glob.glob(os.path.join(path_to_dir, '*.png'))
 
-        for img in img_list:
-            folder_name, file_name = os.path.split(img)
-            image = cv2.imread(img)
-            h, w, c = image.shape
-            bbox_list, class_list, confidence = get_BBoxYOLOv7(image, model, detect_conf)
-            save_yolo(folder_name, file_name, w, h, bbox_list, class_list)
+        if st.checkbox('RUN'):
+            for img in img_list:
+                folder_name, file_name = os.path.split(img)
+                image = cv2.imread(img)
+                h, w, c = image.shape
+                bbox_list, class_list, confidence = get_BBoxYOLOv7(image, model, detect_conf)
+                save_yolo(folder_name, file_name, w, h, bbox_list, class_list)
 
-            st.success(f'Successfully Annotated {file_name}')
+                st.success(f'Successfully Annotated {file_name}')
 
-        st.success('YOLOv7-Auto_Annotation Successfully Completed')
+            st.success('YOLOv7-Auto_Annotation Successfully Completed')
