@@ -42,10 +42,10 @@ def find_pothole_label_in_xml(path_to_xml, save_dir):
         class_name = root[position_id][0].text
         if class_name==f'{select_class_name}':
             print(f'Founded {select_class_name.upper()} in XML file')
-            shutil.move(os.path.join(path_to_dir, filename), os.path.join(save_dir, filename))
-            print(f'Moved {filename} file')
-            shutil.move(path_to_xml, os.path.join(save_dir, xml_filename))
-            print(f'Moved {xml_filename} file')
+            shutil.copyfile(os.path.join(path_to_dir, filename), os.path.join(save_dir, filename))
+            print(f'Copied {filename} file')
+            shutil.copyfile(path_to_xml, os.path.join(save_dir, xml_filename))
+            print(f'Copied {xml_filename} file')
             break
         else:
             print(f'NOT found {select_class_name.upper()} labe in {filename}')
