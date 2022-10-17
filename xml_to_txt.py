@@ -31,26 +31,31 @@ class_names = open(f'{path_to_class}', 'r+').read().splitlines()
 for xml, img in zip(xml_list, img_list):
     path_to_dir, img_name = os.path.split(img)
     tree = ET.parse(xml)
-    with open(xml, 'r') as f:
-        data = f.read()
+    data = open(xml, 'r').read()
     bs_data = BeautifulSoup(data, "xml")
     b_unique = bs_data.find_all('object')
+    count = len(b_unique)
+
+    doc = etree.XML(data)
+    obj_pos = int(doc.xpath('count(//object[1]/preceding-sibling::*)'))
+    bbox_pos_last = int(doc.xpath('count(//bndbox[1]/preceding-sibling::*)'))
+    first_bbox_pos = int(bbox_pos_last/count)
 
     root = tree.getroot()
     path = root[2].text
-    count = len(b_unique)
+    
     img_file = cv2.imread(img)
     h, w, c = img_file.shape
     txt_list = []
     bbox_list = []
     for i in range(count):
-        class_name = root[i+6][0].text
+        class_name = root[i+obj_pos][0].text
         class_selected_id = class_names.index(f'{class_name}')
         
-        xmin = int(root[i+6][4][0].text)
-        ymin = int(root[i+6][4][1].text)
-        xmax = int(root[i+6][4][2].text)
-        ymax = int(root[i+6][4][3].text)
+        xmin = int(root[i+obj_pos][first_bbox_pos][0].text)
+        ymin = int(root[i+obj_pos][first_bbox_pos][1].text)
+        xmax = int(root[i+obj_pos][first_bbox_pos][2].text)
+        ymax = int(root[i+obj_pos][first_bbox_pos][3].text)
     
         x_center = float((xmin + xmax)) / 2 / w
         y_center = float((ymin + ymax)) / 2 / h
