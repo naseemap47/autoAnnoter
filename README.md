@@ -121,3 +121,4 @@ python3 autoAnotYolov7.py -i <PATH_TO_DATA> -m <YOLOv7_MODEL_PATH> -c <MODEL_OBJ
   ```
   python3 tools/find_oneClass_from_xml.py -i path_to/dataset -o path_to/saveDir -n 'class_name'
   ```
+  
