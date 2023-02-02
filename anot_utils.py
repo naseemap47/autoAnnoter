@@ -3,7 +3,6 @@ import numpy as np
 import os
 import xml.etree.ElementTree as ET
 from lxml import etree
-from utils.hubconf import custom
 DEFAULT_ENCODING = 'utf-8'
 
 
@@ -151,6 +150,7 @@ def save_yolo(folder_name, file_name, w, h, bbox_list, class_list):
     print(f'Successfully Created {txt_name}')
 
 
+# YOLOv7
 def get_BBoxYOLOv7(img, yolo_model, detect_conf):
 
     # Load YOLOv7 model on Image
@@ -178,4 +178,36 @@ def get_BBoxYOLOv7(img, yolo_model, detect_conf):
             class_ids.append(id)
             # Confidence
             confidence.append(conf)
+    return bbox_list, class_ids, confidence
+
+
+# YOLOv8
+def get_BBoxYOLOv8(img, yolo_model, detect_conf):
+
+    bbox_list = []
+    confidence = []
+    class_ids = []
+
+    # Load YOLOv7 model on Image
+    results = yolo_model(img)
+
+    for result in results:
+        bboxs = result.boxes.xyxy
+        conf = result.boxes.conf
+        cls = result.boxes.cls
+        for bbox, cnf, cs in zip(bboxs, conf, cls):
+            xmin = int(bbox[0])
+            ymin = int(bbox[1])
+            xmax = int(bbox[2])
+            ymax = int(bbox[3])
+
+            # detect_conf
+            if cnf > detect_conf:
+                # BBox
+                bbox_list.append([xmin, ymin, xmax, ymax])
+                # class
+                class_ids.append(int(cs+1))
+                # Confidence
+                confidence.append(cnf)
+
     return bbox_list, class_ids, confidence
