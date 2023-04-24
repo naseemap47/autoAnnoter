@@ -28,6 +28,9 @@ img_full_list = glob.glob(f'{path_to_img}/*.jpeg') + \
 img_list = sorted(img_full_list)
 class_names = open(f'{path_to_class}', 'r+').read().splitlines()
 
+bbox_temp_id = ['xmin', 'ymin', 'xmax', 'ymax']
+bbox_temp = [None, None, None, None]
+
 for xml, img in zip(xml_list, img_list):
     path_to_dir, img_name = os.path.split(img)
     tree = ET.parse(xml)
@@ -48,15 +51,17 @@ for xml, img in zip(xml_list, img_list):
     h, w, c = img_file.shape
     txt_list = []
     bbox_list = []
+    bbox_temp = [None, None, None, None]
     for i in range(count):
         class_name = root[i+obj_pos][0].text
         class_selected_id = class_names.index(f'{class_name}')
-        
-        xmin = int(root[i+obj_pos][first_bbox_pos][0].text)
-        ymin = int(root[i+obj_pos][first_bbox_pos][1].text)
-        xmax = int(root[i+obj_pos][first_bbox_pos][2].text)
-        ymax = int(root[i+obj_pos][first_bbox_pos][3].text)
-    
+
+        bbox_temp[bbox_temp_id.index(root[i+obj_pos][first_bbox_pos][0].tag)] = int(root[i+obj_pos][first_bbox_pos][0].text)
+        bbox_temp[bbox_temp_id.index(root[i+obj_pos][first_bbox_pos][1].tag)] = int(root[i+obj_pos][first_bbox_pos][1].text)
+        bbox_temp[bbox_temp_id.index(root[i+obj_pos][first_bbox_pos][2].tag)] = int(root[i+obj_pos][first_bbox_pos][2].text)
+        bbox_temp[bbox_temp_id.index(root[i+obj_pos][first_bbox_pos][3].tag)] = int(root[i+obj_pos][first_bbox_pos][3].text)
+
+        xmin, ymin, xmax, ymax = bbox_temp
         x_center = float((xmin + xmax)) / 2 / w
         y_center = float((ymin + ymax)) / 2 / h
         width = float((xmax - xmin)) / w
