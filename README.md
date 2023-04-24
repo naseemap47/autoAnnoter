@@ -1,10 +1,17 @@
 # autoAnnoter
 autoAnnoter its a tool to auto annotate data using a exisiting model
 
-## 🚀 New Update (03-02-2023)
-- ### **YOLOv8** Auto Annotation
-  - Auto Annotate using YOLOv8 Model 
+## 🚀 New Update (24-04-2023)
+- **xml_to_txt.py** (Updated)
+  - Fixed issue with, when unexpected format of xml annotation came, position of **xmax** and **ymin** maybe change, now it can handle any bounding box format.
+- Added XML and TXT annotation visualization tool
+  - **vis_xml.py** : to visulise **xml (Pascal VOC)** annotation format
+  - **vis_txt.py** : to visulise **txt (YOLO)** annotation format
+
 ## Updates
+- (**03-02-2023**) **YOLOv8** Auto Annotation
+  - Auto Annotate using YOLOv8 Model
+
  - (**02-11-2022**) Added tools to this repository, that can help you to setup your Dataset for the Training.
     - **partition_dataset.py** : Partition your Dataset (**XML & TXT & Images**) into Train and Test in ratio
     - **txt_to_xml.py** : Convert your **TXT** Annotation files into **XML** Format
@@ -143,8 +150,8 @@ Convert your **XML** Annotation files into **TXT** Format
 <details>
   <summary>Args</summary>
   
-  `-i`, `--image` : path to image/dir
-  `-x`, `--xml` : path to xml/dir
+  `-i`, `--image` : path to image/dir <br>
+  `-x`, `--xml` : path to xml/dir <br>
   `-c`, `--classes` : path to classes.txt
 
 </details>
@@ -167,7 +174,7 @@ Annoatate your **Negative Dataset**
 <details>
   <summary>Args</summary>
   
-  `-i`, `--dataset` : path to negative dataset
+  `-i`, `--dataset` : path to negative dataset <br>
   `-o`, `--save` : path to save Dir, if not exist it will create
   
 </details>
@@ -183,8 +190,8 @@ To filter your **PASCAL VOC** annotaion **XML** file based on **class name**
 <details>
   <summary>Args</summary>
   
-  `-i`, `--dataset` : path to negative dataset
-  `-o`, `--save` : path to save Dir
+  `-i`, `--dataset` : path to negative dataset <br>
+  `-o`, `--save` : path to save Dir <br>
   `-n`, `--name` : name of class, that wants filter
 
 </details>
@@ -194,3 +201,44 @@ To filter your **PASCAL VOC** annotaion **XML** file based on **class name**
 python3 tools/find_oneClass_from_xml.py -i path_to/dataset -o path_to/saveDir -n 'class_name'
 ```
   
+### 6. vis_xml.py:
+to visulise **xml (Pascal VOC)** annotation format
+
+<details>
+  <summary>Args</summary>
+  
+  `-i`, `--img` : path to image file <br>
+  `-x`, `--xml` : path to xml file <br>
+  `-c`, `--classes` : path to classes.txt <br>
+  `--save` : to save annotated image
+
+</details>
+
+**Example:**
+```
+python3 tools/vis_xml.py -i path_to/image -x path_to/xml -c path_to_classes.txt
+
+# to save image
+python3 tools/vis_xml.py -i path_to/image -x path_to/xml -c path_to_classes.txt --save
+```
+
+### 7. vis_txt.py:
+to visulise **txt (YOLO)** annotation format
+
+<details>
+  <summary>Args</summary>
+  
+  `-i`, `--img` : path to image file <br>
+  `-t`, `--txt` : path to txt file <br>
+  `-c`, `--classes` : path to classes.txt <br>
+  `--save` : to save annotated image
+
+</details>
+
+**Example:**
+```
+python3 tools/vis_txt.py -i path_to/image -t path_to/txt -c path_to_classes.txt
+
+# to save image
+python3 tools/vis_txt.py -i path_to/image -t path_to/txt -c path_to_classes.txt --save
+```
