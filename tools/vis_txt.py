@@ -13,8 +13,6 @@ ap.add_argument("--save", action='store_true',
                 help="Save image")
 args = vars(ap.parse_args())
 
-txt_name = args['txt']
-path_to_class = args['classes']
 
 def plot_one_box(x, img, color=None, label=None, line_thickness=3):
     # Plots one bounding box on image img
@@ -32,9 +30,9 @@ def plot_one_box(x, img, color=None, label=None, line_thickness=3):
 
 img_file = cv2.imread(args['img'])
 height_n, width_n, depth_n = img_file.shape
-class_names = open(f'{path_to_class}', 'r+').read().splitlines()
+class_names = open(f"{args['classes']}", 'r+').read().splitlines()
 colors = [[random.randint(0, 255) for _ in range(3)] for _ in class_names]
-txt_file = open(txt_name, 'r+')
+txt_file = open(args['txt'], 'r+')
 lines = txt_file.read().splitlines()
 obj_list = []
 class_list = []
