@@ -25,7 +25,7 @@ def remove_class(class_list, id, remove_list):
     return name in set(remove_list)
 
 # to get bounding box from ONNX model
-def findBBox(onnx_session, img, img_resize, threshold):
+def findBBox(onnx_session, img, img_resize, threshold, class_name_list, remove_list):
   # onnx session
     input_name = onnx_session.get_inputs()[0].name
 
@@ -42,23 +42,24 @@ def findBBox(onnx_session, img, img_resize, threshold):
     c = 0
     for i in ort_outs[4][0]:
         if i > threshold:
-            bbox = ort_outs[1][0][c]
-            ymin = (bbox[0])
-            xmin = (bbox[1])
-            ymax = (bbox[2])
-            xmax = (bbox[3])
-            # cv2.rectangle(img, (xmin, ymin), (xmax, ymax), (0, 255, 0), 2)
-            xmin, ymin, xmax, ymax = int(
-                xmin*w), int(ymin*h), int(xmax*w), int(ymax*h)
-            bbox_list.append([xmin, ymin, xmax, ymax])
+            if not remove_class(class_name_list, int(ort_outs[2][0][c]), remove_list):
+                bbox = ort_outs[1][0][c]
+                ymin = (bbox[0])
+                xmin = (bbox[1])
+                ymax = (bbox[2])
+                xmax = (bbox[3])
+                # cv2.rectangle(img, (xmin, ymin), (xmax, ymax), (0, 255, 0), 2)
+                xmin, ymin, xmax, ymax = int(
+                    xmin*w), int(ymin*h), int(xmax*w), int(ymax*h)
+                bbox_list.append([xmin, ymin, xmax, ymax])
 
-            # Detection Classes
-            class_list.append(ort_outs[2][0][c])
+                # Detection Classes
+                class_list.append(ort_outs[2][0][c])
 
-            # confidence
-            confidence.append(i)
+                # confidence
+                confidence.append(i)
 
-        c = c + 1
+        c += 1
     return bbox_list, class_list, confidence
 
 
