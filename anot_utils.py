@@ -155,7 +155,7 @@ def save_yolo(folder_name, file_name, w, h, bbox_list, class_list):
 
 
 # YOLOv7
-def get_BBoxYOLOv7(img, yolo_model, detect_conf):
+def get_BBoxYOLOv7(img, yolo_model, detect_conf, class_name_list, remove_list):
 
     # Load YOLOv7 model on Image
     results = yolo_model(img)
@@ -176,12 +176,14 @@ def get_BBoxYOLOv7(img, yolo_model, detect_conf):
 
         # detect_conf
         if conf > detect_conf:
-            # BBox
-            bbox_list.append([xmin, ymin, xmax, ymax])
-            # class
-            class_ids.append(id)
-            # Confidence
-            confidence.append(conf)
+            # Remove specfic classes from Annotation
+            if not remove_class(class_name_list, int(id-1), remove_list):
+                # BBox
+                bbox_list.append([xmin, ymin, xmax, ymax])
+                # class
+                class_ids.append(id)
+                # Confidence
+                confidence.append(conf)
     return bbox_list, class_ids, confidence
 
 

@@ -42,7 +42,7 @@ for img in img_list:
     h, w, c = image.shape
 
     if args['model_type'] == 'yolov7':
-        bbox_list, class_list, confidence = get_BBoxYOLOv7(image, model, args['confidence'])
+        bbox_list, class_list, confidence = get_BBoxYOLOv7(image, model, args['confidence'], class_name_list, args['remove'])
     if args['model_type'] == 'yolov8':
         bbox_list, class_list, confidence = get_BBoxYOLOv8(image, model, args['confidence'], class_name_list, args['remove'])
 
