@@ -1,14 +1,21 @@
 # autoAnnoter
 autoAnnoter its a tool to auto annotate data using a exisiting model
 
-## 🚀 New Update (24-04-2023)
-- **xml_to_txt.py** (Updated)
-  - Fixed issue with, when unexpected format of xml annotation came, position of **xmax** and **ymin** maybe change, now it can handle any bounding box format.
-- Added XML and TXT annotation visualization tool
-  - **vis_xml.py** : to visulise **xml (Pascal VOC)** annotation format
-  - **vis_txt.py** : to visulise **txt (YOLO)** annotation format
+## 🚀 New Update (25-04-2023)
+### New Feature Added 🥳
+We can remove any classes from auto annotation. So that we can create new set of dataset using existing model.
+Example:
+- If we need to create a people detection model. We can create new dataset from existing COCO model.
+- If I need to create a dataset to train a model to detect **helmet**, **shoe** and **person**. But I can't annotate big dataset. But I have a model to detect **Helmet**, **Person** and other classes as well. But I can use this new feature (**Remove Classes from Auto Annotation**) only annotate **Helmet** and **Person**. This will reduce **2/3 of my work**. After this I only need to annotate **Shoe**. 
 
 ## Updates
+- (**24-04-2023**): Added visualization tool and fixed issue with **XML** to **TXT** conversion.
+  - **xml_to_txt.py** (Updated)
+    - Fixed issue with, when unexpected format of xml annotation came, position of **xmax** and **ymin** maybe change, now it can handle any bounding box format.
+  - Added XML and TXT annotation visualization tool
+    - **vis_xml.py** : to visulise **xml (Pascal VOC)** annotation format
+    - **vis_txt.py** : to visulise **txt (YOLO)** annotation format
+
 - (**03-02-2023**) **YOLOv8** Auto Annotation
   - Auto Annotate using YOLOv8 Model
 
@@ -39,7 +46,8 @@ pip3 install -r requirements.txt
   `-c`, `--classes`: path to classes.txt <br>
   `-m`, `--model`: path to ONNX model <br>
   `-s`, `--size`: Size of image used to train the model <br>
-  `-conf`, `--confidence`: Model detection Confidence (0<confidence<1)
+  `-conf`, `--confidence`: Model detection Confidence (0<confidence<1) <br>
+  `-r`, `--remove`: List of classes need to remove
 
 </details>
 
@@ -52,6 +60,10 @@ python3 autoAnnot.py --xml --dataset images/ --classes classes.txt --model model
 ```
 python3 autoAnnot.py --txt --dataset images/ --classes classes.txt --model models/model.onnx --size 224 --confidence 0.75
 ```
+**To Remove classes from auto-annotation**
+```
+python3 autoAnnot.py --txt --dataset images/ --classes classes.txt --model models/model.onnx --size 224 --confidence 0.75 --remove 'person' 'car
+```
 ## 2. YOLO Model
 
 <details>
@@ -60,7 +72,8 @@ python3 autoAnnot.py --txt --dataset images/ --classes classes.txt --model model
   `-i`, `--dataset`: path to dataset/dir <br>
   `-mt`, `--model_type`: Choose YOLO Model "YOLOv7 or YOLOv8" <br>
   `-m`, `--model`: path to best.pt (YOLO) model <br>
-  `-conf`, `--confidence`: Model detection Confidence (0<confidence<1)
+  `-conf`, `--confidence`: Model detection Confidence (0<confidence<1) <br>
+  `-r`, `--remove`: List of classes need to remove
 
 </details>
 
@@ -69,10 +82,18 @@ python3 autoAnnot.py --txt --dataset images/ --classes classes.txt --model model
 ```
 python3 autoAnotYolo.py --dataset dataset/images --model_type yolov7 --model runs/train/weights/best.pt --confidence 0.8
 ```
+- **To Remove classes from auto-annotation**
+```
+python3 autoAnotYolo.py --dataset dataset/images --model_type yolov7 --model runs/train/weights/best.pt --confidence 0.8 --remove 'bus'
+```
 
 **YOLOv8 Model**
 ```
 python3 autoAnotYolo.py --dataset dataset/images --model_type yolov8 --model runs/train/weights/best.pt --confidence 0.8
+```
+- **To Remove classes from auto-annotation**
+```
+python3 autoAnotYolo.py --dataset dataset/images --model_type yolov8 --model runs/train/weights/best.pt --confidence 0.8 --remove 'elephant' 'cat' 'bear'
 ```
 
 ## 🛠️ Tools

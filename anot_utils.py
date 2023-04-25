@@ -19,9 +19,13 @@ def findClass(class_id, class_names):
     class_name = class_names[int(class_id)-1]
     return class_name
 
+# Remove Class from Annotaion
+def remove_class(class_list, id, remove_list):
+    name = class_list[id]
+    return name in set(remove_list)
 
 # to get bounding box from ONNX model
-def findBBox(onnx_session, img, img_resize, threshold):
+def findBBox(onnx_session, img, img_resize, threshold, class_name_list, remove_list):
   # onnx session
     input_name = onnx_session.get_inputs()[0].name
 
@@ -38,23 +42,24 @@ def findBBox(onnx_session, img, img_resize, threshold):
     c = 0
     for i in ort_outs[4][0]:
         if i > threshold:
-            bbox = ort_outs[1][0][c]
-            ymin = (bbox[0])
-            xmin = (bbox[1])
-            ymax = (bbox[2])
-            xmax = (bbox[3])
-            # cv2.rectangle(img, (xmin, ymin), (xmax, ymax), (0, 255, 0), 2)
-            xmin, ymin, xmax, ymax = int(
-                xmin*w), int(ymin*h), int(xmax*w), int(ymax*h)
-            bbox_list.append([xmin, ymin, xmax, ymax])
+            if not remove_class(class_name_list, int(ort_outs[2][0][c]), remove_list):
+                bbox = ort_outs[1][0][c]
+                ymin = (bbox[0])
+                xmin = (bbox[1])
+                ymax = (bbox[2])
+                xmax = (bbox[3])
+                # cv2.rectangle(img, (xmin, ymin), (xmax, ymax), (0, 255, 0), 2)
+                xmin, ymin, xmax, ymax = int(
+                    xmin*w), int(ymin*h), int(xmax*w), int(ymax*h)
+                bbox_list.append([xmin, ymin, xmax, ymax])
 
-            # Detection Classes
-            class_list.append(ort_outs[2][0][c])
+                # Detection Classes
+                class_list.append(ort_outs[2][0][c])
 
-            # confidence
-            confidence.append(i)
+                # confidence
+                confidence.append(i)
 
-        c = c + 1
+        c += 1
     return bbox_list, class_list, confidence
 
 
@@ -151,7 +156,7 @@ def save_yolo(folder_name, file_name, w, h, bbox_list, class_list):
 
 
 # YOLOv7
-def get_BBoxYOLOv7(img, yolo_model, detect_conf):
+def get_BBoxYOLOv7(img, yolo_model, detect_conf, class_name_list, remove_list):
 
     # Load YOLOv7 model on Image
     results = yolo_model(img)
@@ -172,23 +177,25 @@ def get_BBoxYOLOv7(img, yolo_model, detect_conf):
 
         # detect_conf
         if conf > detect_conf:
-            # BBox
-            bbox_list.append([xmin, ymin, xmax, ymax])
-            # class
-            class_ids.append(id)
-            # Confidence
-            confidence.append(conf)
+            # Remove specfic classes from Annotation
+            if not remove_class(class_name_list, int(id-1), remove_list):
+                # BBox
+                bbox_list.append([xmin, ymin, xmax, ymax])
+                # class
+                class_ids.append(id)
+                # Confidence
+                confidence.append(conf)
     return bbox_list, class_ids, confidence
 
 
 # YOLOv8
-def get_BBoxYOLOv8(img, yolo_model, detect_conf):
+def get_BBoxYOLOv8(img, yolo_model, detect_conf, class_name_list, remove_list):
 
     bbox_list = []
     confidence = []
     class_ids = []
 
-    # Load YOLOv7 model on Image
+    # Load YOLOv8 model on Image
     results = yolo_model(img)
 
     for result in results:
@@ -203,11 +210,13 @@ def get_BBoxYOLOv8(img, yolo_model, detect_conf):
 
             # detect_conf
             if cnf > detect_conf:
-                # BBox
-                bbox_list.append([xmin, ymin, xmax, ymax])
-                # class
-                class_ids.append(int(cs+1))
-                # Confidence
-                confidence.append(cnf)
+                # Remove specfic classes from Annotation
+                if not remove_class(class_name_list, int(cs), remove_list):
+                    # BBox
+                    bbox_list.append([xmin, ymin, xmax, ymax])
+                    # class
+                    class_ids.append(int(cs+1))
+                    # Confidence
+                    confidence.append(cnf)
 
     return bbox_list, class_ids, confidence
