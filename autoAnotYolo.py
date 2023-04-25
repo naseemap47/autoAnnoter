@@ -17,40 +17,41 @@ ap.add_argument("-m", "--model", type=str, required=True,
                 help="path to best.pt (YOLOv7) model")
 ap.add_argument("-c", "--confidence", type=float, required=True,
                 help="Model detection Confidence (0<confidence<1)")
-
-
+ap.add_argument("-r", "--remove", nargs='+', default=[],
+                help="List of classes need to remove")
 args = vars(ap.parse_args())
-path_to_dir = args["dataset"]
-model_type = args['model_type']
-path_or_model = args['model']
-detect_conf = args['confidence']
 
-remove_list = ['XUV400', 'notXUV400']
 
-if model_type == 'yolov7':
+if args['model_type'] == 'yolov7':
     # Load YOLOv7 Model
-    model = custom(path_or_model=path_or_model)
-if model_type == 'yolov8':
+    model = custom(path_or_model=args['model'])
+if args['model_type'] == 'yolov8':
     # Load YOLOv8 Model
-    model = YOLO(path_or_model)
+    model = YOLO(args['model'])
 
 # Class Names
 class_name_list = [x for _, x in model.names.items()]
 
-img_list = glob.glob(os.path.join(path_to_dir, '*.jpg')) + \
-    glob.glob(os.path.join(path_to_dir, '*.jpeg')) + \
-    glob.glob(os.path.join(path_to_dir, '*.png'))
+img_list = glob.glob(os.path.join(args["dataset"], '*.jpg')) + \
+    glob.glob(os.path.join(args["dataset"], '*.jpeg')) + \
+    glob.glob(os.path.join(args["dataset"], '*.png'))
 
 for img in img_list:
     folder_name, file_name = os.path.split(img)
     image = cv2.imread(img)
     h, w, c = image.shape
 
-    if model_type == 'yolov7':
-        bbox_list, class_list, confidence = get_BBoxYOLOv7(image, model, detect_conf)
-    if model_type == 'yolov8':
-        bbox_list, class_list, confidence = get_BBoxYOLOv8(image, model, detect_conf, class_name_list, remove_list)
+    if args['model_type'] == 'yolov7':
+        bbox_list, class_list, confidence = get_BBoxYOLOv7(image, model, args['confidence'])
+    if args['model_type'] == 'yolov8':
+        bbox_list, class_list, confidence = get_BBoxYOLOv8(image, model, args['confidence'], class_name_list, args['remove'])
 
     save_yolo(folder_name, file_name, w, h, bbox_list, class_list)
     print(f'Successfully Annotated {file_name}')
-print('YOLOv7-Auto_Annotation Successfully Completed')
+
+# Save Labe Map
+with open(f"{args['dataset']}/classes.txt", "w") as output:
+    for i in class_name_list:
+        output.write(f'{i}\n')
+print(f'[INFO] Saved Labelmap to: {args["dataset"]}/classes.txt')
+print(f"[INFO] {args['model_type']}-Auto_Annotation Successfully Completed")
