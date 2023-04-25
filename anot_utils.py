@@ -19,6 +19,10 @@ def findClass(class_id, class_names):
     class_name = class_names[int(class_id)-1]
     return class_name
 
+# Remove Class from Annotaion
+def remove_class(class_list, id, remove_list):
+    name = class_list[id]
+    return name in set(remove_list)
 
 # to get bounding box from ONNX model
 def findBBox(onnx_session, img, img_resize, threshold):
@@ -182,13 +186,13 @@ def get_BBoxYOLOv7(img, yolo_model, detect_conf):
 
 
 # YOLOv8
-def get_BBoxYOLOv8(img, yolo_model, detect_conf):
+def get_BBoxYOLOv8(img, yolo_model, detect_conf, class_name_list, remove_list):
 
     bbox_list = []
     confidence = []
     class_ids = []
 
-    # Load YOLOv7 model on Image
+    # Load YOLOv8 model on Image
     results = yolo_model(img)
 
     for result in results:
@@ -203,11 +207,13 @@ def get_BBoxYOLOv8(img, yolo_model, detect_conf):
 
             # detect_conf
             if cnf > detect_conf:
-                # BBox
-                bbox_list.append([xmin, ymin, xmax, ymax])
-                # class
-                class_ids.append(int(cs+1))
-                # Confidence
-                confidence.append(cnf)
+                # Remove specfic classes from Annotation
+                if not remove_class(class_name_list, int(cs), remove_list):
+                    # BBox
+                    bbox_list.append([xmin, ymin, xmax, ymax])
+                    # class
+                    class_ids.append(int(cs+1))
+                    # Confidence
+                    confidence.append(cnf)
 
     return bbox_list, class_ids, confidence
