@@ -72,7 +72,7 @@ for img in img_list:
     if args['model_type'] == 'yolov8':
         bbox_list, class_list, confidence = get_BBoxYOLOv8(image, model, args['confidence'], class_name_list, args['remove'])
     if args['model_type'] == 'yolonas':
-        bbox_list, class_list, confidence = get_BBoxYOLONAS(image, model, args['confidence'], args['remove'])
+        bbox_list, class_list, confidence = get_BBoxYOLONAS(image, model, args['confidence'], class_name_list, args['remove'])
 
     save_yolo(folder_name, file_name, w, h, bbox_list, class_list)
     print(f'Successfully Annotated {file_name}')

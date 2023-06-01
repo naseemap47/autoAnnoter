@@ -223,7 +223,7 @@ def get_BBoxYOLOv8(img, yolo_model, detect_conf, class_name_list, remove_list):
 
 
 # YOLOv8
-def get_BBoxYOLONAS(img, yolo_model, detect_conf, remove_list):
+def get_BBoxYOLONAS(img, yolo_model, detect_conf, class_name_list, remove_list):
 
     bbox_list = []
     confidence = []
@@ -232,7 +232,7 @@ def get_BBoxYOLONAS(img, yolo_model, detect_conf, remove_list):
     # Load YOLOv8 model on Image
     img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     preds = next(yolo_model.predict(img_rgb)._images_prediction_lst)
-    class_name_list = preds.class_names
+    # class_name_list = preds.class_names
     dp = preds.prediction
     bboxes, confs, labels = np.array(dp.bboxes_xyxy), dp.confidence, dp.labels.astype(int)
     for box, cnf, cs in zip(bboxes, confs, labels):
