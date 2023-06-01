@@ -26,7 +26,6 @@ ap.add_argument("-t", "--type", type=str,
 ap.add_argument("-y", "--yaml", type=str,
                 help="path to data.yaml")
 
-
 ap.add_argument("-c", "--confidence", type=float, required=True,
                 help="Model detection Confidence (0<confidence<1)")
 ap.add_argument("-r", "--remove", nargs='+', default=[],
@@ -48,15 +47,23 @@ if args['model_type'] == 'yolov8':
 
 if args['model_type'] == 'yolonas':
     # Load YOLO-NAS Model
-    yaml_params = yaml.safe_load(open(args['yaml'], 'r'))
-    model = models.get(
-        args['type'], 
-        checkpoint_path=args['model'], 
-        num_classes=len(yaml_params['names'])
-    )
-    model = model.to("cuda" if torch.cuda.is_available() else "cpu")
-    # Class Names
-    class_name_list = yaml_params['names']
+    if args['yaml'] is None:
+        print('[ERROR] Please give path to yaml file')
+    else:
+        yaml_params = yaml.safe_load(open(args['yaml'], 'r'))
+
+    if args['type'] is None:
+        print('[ERROR] Please YOLO-NAS Model type')
+    else:
+        model = models.get(
+            args['type'], 
+            checkpoint_path=args['model'], 
+            num_classes=len(yaml_params['names'])
+        )
+        model = model.to("cuda" if torch.cuda.is_available() else "cpu")
+        # Class Names
+        class_name_list = yaml_params['names']
+
 
 img_list = glob.glob(os.path.join(args["dataset"], '*.jpg')) + \
     glob.glob(os.path.join(args["dataset"], '*.jpeg')) + \
