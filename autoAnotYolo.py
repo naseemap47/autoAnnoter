@@ -56,7 +56,7 @@ if args['model_type'] == 'yolonas':
     )
     model = model.to("cuda" if torch.cuda.is_available() else "cpu")
     # Class Names
-    # class_name_list = yaml_params['names']
+    class_name_list = yaml_params['names']
 
 img_list = glob.glob(os.path.join(args["dataset"], '*.jpg')) + \
     glob.glob(os.path.join(args["dataset"], '*.jpeg')) + \
