@@ -79,7 +79,8 @@ python3 autoAnnot.py --txt --dataset images/ --classes classes.txt --model model
   
   for **YOLO-NAS** Model <br>
   `-t`, `--type`: Choose YOLO-NAS model type <br> **example**: `yolo_nas_s`, `yolo_nas_m`, `yolo_nas_l` <br>
-  `-y`, `--yaml`: path to data.yaml file
+  `-y`, `--yaml`: path to data.yaml file <br>
+  Example: [data.yaml](https://github.com/naseemap47/YOLO-NAS/blob/master/data.yaml)
     
 
 </details>
@@ -109,7 +110,7 @@ python3 autoAnotYolo.py --dataset dataset/images --model_type yolonas --model ru
 ```
 - **To Remove classes from auto-annotation**
 ```
-python3 autoAnotYolo.py --dataset dataset/images --model_type yolonas --model runs/train/weights/best.pt --type yolo_nas_s --yaml my_data/data/yaml --confidence 0.8 --remove 'elephant' 'cat' 'bear'
+python3 autoAnotYolo.py --dataset dataset/images --model_type yolonas --model runs/train/weights/best.pt --type yolo_nas_s --yaml my_data/data/yaml --confidence 0.8 --remove 'car'
 ```
 
 
