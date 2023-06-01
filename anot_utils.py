@@ -220,3 +220,31 @@ def get_BBoxYOLOv8(img, yolo_model, detect_conf, class_name_list, remove_list):
                     confidence.append(cnf)
 
     return bbox_list, class_ids, confidence
+
+
+# YOLOv8
+def get_BBoxYOLONAS(img, yolo_model, detect_conf, class_name_list, remove_list):
+
+    bbox_list = []
+    confidence = []
+    class_ids = []
+
+    # Load YOLOv8 model on Image
+    img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    preds = next(yolo_model.predict(img_rgb)._images_prediction_lst)
+    # class_name_list = preds.class_names
+    dp = preds.prediction
+    bboxes, confs, labels = np.array(dp.bboxes_xyxy), dp.confidence, dp.labels.astype(int)
+    for box, cnf, cs in zip(bboxes, confs, labels):
+        # detect_conf
+        if cnf > detect_conf:
+            # Remove specfic classes from Annotation
+            if not remove_class(class_name_list, int(cs), remove_list):
+                # BBox
+                bbox_list.append([box[:4]])
+                # class
+                class_ids.append(int(cs+1))
+                # Confidence
+                confidence.append(cnf)
+
+    return bbox_list, class_ids, confidence

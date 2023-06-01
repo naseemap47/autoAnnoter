@@ -1,14 +1,16 @@
 # autoAnnoter
 autoAnnoter its a tool to auto annotate data using a exisiting model
 
-## 🚀 New Update (25-04-2023)
-### New Feature Added 🥳
-We can remove any classes from auto annotation. So that we can create new set of dataset using existing model.
-Example:
-- If we need to create a people detection model. We can create new dataset from existing COCO model.
-- If I need to create a dataset to train a model to detect **helmet**, **shoe** and **person**. But I can't annotate big dataset. But I have a model to detect **Helmet**, **Person** and other classes as well. But I can use this new feature (**Remove Classes from Auto Annotation**) only annotate **Helmet** and **Person**. This will reduce **2/3 of my work**. After this I only need to annotate **Shoe**. 
+## 🚀 New Update (01-06-2023)
+### Auto Annotate using YOLO-NAS Model 🥳
+We can auto annotate data using new YOLO-NAS model. 
 
 ## Updates
+- (**25-04-2023**): We can remove any classes from auto annotation. So that we can create new set of dataset using existing model.
+  Example:
+  - If we need to create a people detection model. We can create new dataset from existing COCO model.
+  - If I need to create a dataset to train a model to detect **helmet**, **shoe** and **person**. But I can't annotate big dataset. But I have a model to detect **Helmet**, **Person** and other classes as well. But I can use this new feature (**Remove Classes from Auto Annotation**) only annotate **Helmet** and **Person**. This will reduce **2/3 of my work**. After this I only need to annotate **Shoe**.
+
 - (**24-04-2023**): Added visualization tool and fixed issue with **XML** to **TXT** conversion.
   - **xml_to_txt.py** (Updated)
     - Fixed issue with, when unexpected format of xml annotation came, position of **xmax** and **ymin** maybe change, now it can handle any bounding box format.
@@ -73,7 +75,12 @@ python3 autoAnnot.py --txt --dataset images/ --classes classes.txt --model model
   `-mt`, `--model_type`: Choose YOLO Model "YOLOv7 or YOLOv8" <br>
   `-m`, `--model`: path to best.pt (YOLO) model <br>
   `-conf`, `--confidence`: Model detection Confidence (0<confidence<1) <br>
-  `-r`, `--remove`: List of classes need to remove
+  `-r`, `--remove`: List of classes need to remove <br>
+  
+  for **YOLO-NAS** Model <br>
+  `-t`, `--type`: Choose YOLO-NAS model type <br> **example**: `yolo_nas_s`, `yolo_nas_m`, `yolo_nas_l` <br>
+  `-y`, `--yaml`: path to data.yaml file
+    
 
 </details>
 
@@ -95,6 +102,16 @@ python3 autoAnotYolo.py --dataset dataset/images --model_type yolov8 --model run
 ```
 python3 autoAnotYolo.py --dataset dataset/images --model_type yolov8 --model runs/train/weights/best.pt --confidence 0.8 --remove 'elephant' 'cat' 'bear'
 ```
+
+**YOLO-NAS Model**
+```
+python3 autoAnotYolo.py --dataset dataset/images --model_type yolonas --model runs/train/weights/best.pt --type yolo_nas_s --yaml my_data/data/yaml --confidence 0.8
+```
+- **To Remove classes from auto-annotation**
+```
+python3 autoAnotYolo.py --dataset dataset/images --model_type yolonas --model runs/train/weights/best.pt --type yolo_nas_s --yaml my_data/data/yaml --confidence 0.8 --remove 'elephant' 'cat' 'bear'
+```
+
 
 ## 🛠️ Tools
 ### 1. partition_dataset.py:
