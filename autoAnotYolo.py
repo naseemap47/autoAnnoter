@@ -21,7 +21,7 @@ ap.add_argument("-m", "--model", type=str, required=True,
 
 # If its YOLO-NAS its need 2 more args
 ap.add_argument("-t", "--type", type=str,
-                default='yolo_nas_s',
+                choices=['yolo_nas_s', 'yolo_nas_m', 'yolo_nas_l'],
                 help="YOLO-NAS Model type")
 ap.add_argument("-y", "--yaml", type=str,
                 help="path to data.yaml")
