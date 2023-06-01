@@ -1,9 +1,6 @@
+super-gradients
+triton==2.0.0
 ultralytics
 lxml
 onnxruntime
 streamlit
-
-# My GPU only working in this vesions
-# So am downgrading
-# torch==1.12.1
-# torchvision==0.13.1
