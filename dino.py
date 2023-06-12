@@ -74,7 +74,7 @@ for img_path in img_list:
     print(f'Successfully Annotated {file_name}')
 
 # Save Labe Map
-with open(f"{args['dataset']}/classes.txt", "w") as output:
+with open(os.path.join(args['dataset'], 'classes.txt'), "w") as output:
     for i in txt_prompt.keys():
         output.write(f'{i}\n')
-print(f'[INFO] Saved Labelmap to: {args["dataset"]}/classes.txt')
+print(f"[INFO] Saved Labelmap to: {os.path.join(args['dataset'], 'classes.txt')}")
