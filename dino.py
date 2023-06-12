@@ -76,5 +76,5 @@ for img_path in img_list:
 # Save Labe Map
 with open(os.path.join(args['dataset'], 'classes.txt'), "w") as output:
     for i in txt_prompt.keys():
-        output.write(f'{i}\n')
+        output.write(f'{txt_prompt[i]}\n')
 print(f"[INFO] Saved Labelmap to: {os.path.join(args['dataset'], 'classes.txt')}")
