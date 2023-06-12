@@ -1,17 +1,13 @@
-from GroundingDINO.groundingdino.util.inference import load_model, load_image, predict, annotate
-from torchvision.ops import box_convert
-from anot_utils import save_yolo
-import supervision as sv
-import cv2
-import numpy as np
+from GroundingDINO.groundingdino.util.inference import load_model, predict
+from anot_utils import save_yolo, box_cxcywh_to_xyxy
 import GroundingDINO.groundingdino.datasets.transforms as T
-from typing import Tuple
 from PIL import Image
+import numpy as np
 import glob
-import os
 import json
 import torch
-from torch import Tensor
+import cv2
+import os
 import argparse
 
 
@@ -19,30 +15,6 @@ ap = argparse.ArgumentParser()
 ap.add_argument("-i", "--dataset", type=str, required=True,
                 help="path to dataset/dir")
 args = vars(ap.parse_args())
-
-
-def box_cxcywh_to_xyxy(boxes: Tensor) -> Tensor:
-    """
-    Converts bounding boxes from (cx, cy, w, h) format to (x1, y1, x2, y2) format.
-    (cx, cy) refers to center of bounding box
-    (w, h) are width and height of bounding box
-    Args:
-        boxes (Tensor[N, 4]): boxes in (cx, cy, w, h) format which will be converted.
-
-    Returns:
-        boxes (Tensor(N, 4)): boxes in (x1, y1, x2, y2) format.
-    """
-    # We need to change all 4 of them so some temporary variable is needed.
-    cx, cy, w, h = boxes.unbind(-1)
-    x1 = cx - 0.5 * w
-    y1 = cy - 0.5 * h
-    x2 = cx + 0.5 * w
-    y2 = cy + 0.5 * h
-
-    boxes = torch.stack((x1, y1, x2, y2), dim=-1)
-
-    return boxes
-
 
 
 CONFIG_PATH = 'GroundingDINO/groundingdino/config/GroundingDINO_SwinT_OGC.py'
@@ -83,9 +55,7 @@ for img_path in img_list:
         box_threshold=BOX_TRESHOLD, 
         text_threshold=TEXT_TRESHOLD
     )
-    print(bbox_list, logits, phrases)
     class_list = [int(list(txt_prompt).index(value)+1) for value in phrases]
-    print(class_list)
     bbox_list = bbox_list * torch.Tensor([w, h, w, h])
     bbox_list = box_cxcywh_to_xyxy(boxes=bbox_list).numpy()
     save_yolo(folder_name, file_name, w, h, bbox_list, class_list)

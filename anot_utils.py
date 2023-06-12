@@ -3,6 +3,8 @@ import numpy as np
 import os
 import xml.etree.ElementTree as ET
 from lxml import etree
+from torch import Tensor
+import torch
 DEFAULT_ENCODING = 'utf-8'
 
 
@@ -248,3 +250,27 @@ def get_BBoxYOLONAS(img, yolo_model, detect_conf, class_name_list, remove_list):
                 confidence.append(cnf)
 
     return bbox_list, class_ids, confidence
+
+
+# Convert CXCYWH to XYXY
+def box_cxcywh_to_xyxy(boxes: Tensor) -> Tensor:
+    """
+    Converts bounding boxes from (cx, cy, w, h) format to (x1, y1, x2, y2) format.
+    (cx, cy) refers to center of bounding box
+    (w, h) are width and height of bounding box
+    Args:
+        boxes (Tensor[N, 4]): boxes in (cx, cy, w, h) format which will be converted.
+
+    Returns:
+        boxes (Tensor(N, 4)): boxes in (x1, y1, x2, y2) format.
+    """
+    # We need to change all 4 of them so some temporary variable is needed.
+    cx, cy, w, h = boxes.unbind(-1)
+    x1 = cx - 0.5 * w
+    y1 = cy - 0.5 * h
+    x2 = cx + 0.5 * w
+    y2 = cy + 0.5 * h
+
+    boxes = torch.stack((x1, y1, x2, y2), dim=-1)
+
+    return boxes
