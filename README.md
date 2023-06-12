@@ -1,11 +1,17 @@
 # autoAnnoter
-autoAnnoter its a tool to auto annotate data using a exisiting model
+autoAnnoter: Its a tool to auto annotate data using a exisiting model
 
-## 🚀 New Update (01-06-2023)
-### Auto Annotate using YOLO-NAS Model 🥳
-We can auto annotate data using new YOLO-NAS model. 
+## We can auto annotate any class 🚀 New Update (12-06-2023)
+### 🥳 Auto Annotate using Grounding DINO Model 🦕
+We can auto annotate **any class** on our data using new Grounding DINO model.<br>
+No need of any pre-trained or any custom model to auto-annotate.
+
+### About Grounding DINO 🦕
+Grounding DINO, by marrying **Transformer-based detector** DINO with grounded pre-training, which can detect arbitrary objects with human inputs such as category names or referring expressions. 
 
 ## Updates
+- (**01-06-2023**) **YOLO-NAS** Auto Annotation
+  - Auto Annotate using YOLO-NAS Model
 - (**25-04-2023**): We can remove any classes from auto annotation. So that we can create new set of dataset using existing model.
   Example:
   - If we need to create a people detection model. We can create new dataset from existing COCO model.
@@ -37,7 +43,48 @@ git clone https://github.com/naseemap47/autoAnnoter.git
 cd autoAnnoter/
 pip3 install -r requirements.txt
 ```
-## 1. ONNX Model
+
+## 1. Grounding DINO 🦕
+Grounding DINO is text to detection model. So we need to give text prompt that correspond to respective class.<br>
+To do this, we needs to create [prompt.json](https://github.com/naseemap47/autoAnnoter/blob/dino/prompt.json) <br>
+
+**JSON keys** should be text prompt to Grounding DINO model.<br>
+But the values for the each keys should be **class names** for that detection.<br>
+
+### Example:
+Here I need to train one custom model that can predict **high quality cap** and **low quality cap**.<br>
+So for this I give my **Grounding DINO** text prompt as **red cap** and **yellow caps**, to annotate my **high quality cap** and **low quality cap** classes.<br>
+I give this example to show you that, some times we need to give **Grounding DINO** text prompt as more elaborate way, like my example.
+
+![out11](https://github.com/naseemap47/autoAnnoter/assets/88816150/df2ebb71-ad67-4bce-9099-cd9857a4cfcd)
+
+
+```
+{
+    "red caps": "high quality cap",
+    "yellow caps": "low quality cap"
+}
+``` 
+### This approch we can use when the object is same, but have different feature like color.
+
+<details>
+  <summary>Args</summary>
+  
+  `-i`, `--dataset`: path to dataset/dir <br>
+  `-p`, `--prompt`: path to prompt.json <br>
+  `-bt`, `--box_thld`: Box Threshold <br>
+  `-tt`, `--txt_thld`: text threshold
+  
+</details>
+
+To auto-annotate Grounding DINO model, we need to give text prompt that correspond to respective class. 
+
+**Example:**
+```
+python3 dino.py --dataset images/ --prompt prompt.json
+```
+
+## 2. ONNX Model
 
 <details>
   <summary>Args</summary>
@@ -66,7 +113,7 @@ python3 autoAnnot.py --txt --dataset images/ --classes classes.txt --model model
 ```
 python3 autoAnnot.py --txt --dataset images/ --classes classes.txt --model models/model.onnx --size 224 --confidence 0.75 --remove 'person' 'car
 ```
-## 2. YOLO Model
+## 3. YOLO Model
 
 <details>
   <summary>Args</summary>
