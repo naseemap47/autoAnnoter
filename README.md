@@ -84,7 +84,7 @@ To auto-annotate Grounding DINO model, we need to give text prompt that correspo
 python3 dino.py --dataset images/ --prompt prompt.json
 ```
 
-## 1. ONNX Model
+## 2. ONNX Model
 
 <details>
   <summary>Args</summary>
@@ -113,7 +113,7 @@ python3 autoAnnot.py --txt --dataset images/ --classes classes.txt --model model
 ```
 python3 autoAnnot.py --txt --dataset images/ --classes classes.txt --model models/model.onnx --size 224 --confidence 0.75 --remove 'person' 'car
 ```
-## 2. YOLO Model
+## 3. YOLO Model
 
 <details>
   <summary>Args</summary>
