@@ -8,17 +8,31 @@ import json
 import torch
 import cv2
 import os
+import wget
 import argparse
 
 
 ap = argparse.ArgumentParser()
 ap.add_argument("-i", "--dataset", type=str, required=True,
                 help="path to dataset/dir")
+ap.add_argument("-p", "--prompt", type=str, required=True,
+                help="path to prompt.json")
+ap.add_argument("-bt", "--box_thld", type=float, default=0.35,
+                help="Box Threshold")
+ap.add_argument("-tt", "--txt_thld", type=str, default=0.25,
+                help="text threshold")
 args = vars(ap.parse_args())
 
 
-CONFIG_PATH = 'GroundingDINO/groundingdino/config/GroundingDINO_SwinT_OGC.py'
+CONFIG_PATH = os.path.join('GroundingDINO', 'groundingdino', 'config', 'GroundingDINO_SwinT_OGC.py')
+if not os.path.exists("groundingdino_swint_ogc.pth"):
+    print(
+        f"[INFO] GroundingDINO Model NOT Found!!! \n \
+        [INFO] Downloading GroundingDINO Model..."
+    )
+    wget.download("https://github.com/IDEA-Research/GroundingDINO/releases/download/v0.1.0-alpha/groundingdino_swint_ogc.pth")
 WEIGHTS_PATH = "groundingdino_swint_ogc.pth"
+
 transform = T.Compose(
     [
         T.RandomResize([800], max_size=1333),
@@ -27,12 +41,10 @@ transform = T.Compose(
     ]
 )
 
-BOX_TRESHOLD = 0.35
-TEXT_TRESHOLD = 0.25
-txt_prompt = json.load(open('prompt.json'))
+BOX_TRESHOLD = args['box_thld']
+TEXT_TRESHOLD = args['txt_thld']
+txt_prompt = json.load(open(args['prompt']))
 TEXT_PROMPT = ', '.join([str(elem) for elem in txt_prompt])
-print(TEXT_PROMPT)
-# TEXT_PROMPT = "glass most to the right"
 
 model = load_model(CONFIG_PATH, WEIGHTS_PATH)
 
