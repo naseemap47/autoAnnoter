@@ -24,15 +24,15 @@ ap.add_argument("-tt", "--txt_thld", type=str, default=0.25,
 args = vars(ap.parse_args())
 
 
-CONFIG_PATH = os.path.join('GroundingDINO', 'groundingdino', 'config', 'GroundingDINO_SwinT_OGC.py')
+# Download groundingdino model if not present
 if not os.path.exists("groundingdino_swint_ogc.pth"):
     print(
         f"[INFO] GroundingDINO Model NOT Found!!! \n \
         [INFO] Downloading GroundingDINO Model..."
     )
     wget.download("https://github.com/IDEA-Research/GroundingDINO/releases/download/v0.1.0-alpha/groundingdino_swint_ogc.pth")
-WEIGHTS_PATH = "groundingdino_swint_ogc.pth"
 
+# Transform
 transform = T.Compose(
     [
         T.RandomResize([800], max_size=1333),
@@ -41,12 +41,14 @@ transform = T.Compose(
     ]
 )
 
-BOX_TRESHOLD = args['box_thld']
-TEXT_TRESHOLD = args['txt_thld']
+# Read prompt.json
 txt_prompt = json.load(open(args['prompt']))
 TEXT_PROMPT = ', '.join([str(elem) for elem in txt_prompt])
 
-model = load_model(CONFIG_PATH, WEIGHTS_PATH)
+model = load_model(
+    os.path.join('GroundingDINO', 'groundingdino', 'config', 'GroundingDINO_SwinT_OGC.py'), 
+    "groundingdino_swint_ogc.pth"
+)
 
 img_list = glob.glob(os.path.join(args["dataset"], '*.jpg')) + \
     glob.glob(os.path.join(args["dataset"], '*.jpeg')) + \
@@ -64,8 +66,8 @@ for img_path in img_list:
         model=model, 
         image=image_transformed, 
         caption=TEXT_PROMPT, 
-        box_threshold=BOX_TRESHOLD, 
-        text_threshold=TEXT_TRESHOLD
+        box_threshold=args['box_thld'], 
+        text_threshold=args['txt_thld']
     )
     class_list = [int(list(txt_prompt).index(value)+1) for value in phrases]
     bbox_list = bbox_list * torch.Tensor([w, h, w, h])
