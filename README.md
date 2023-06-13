@@ -44,19 +44,12 @@ git clone https://github.com/naseemap47/autoAnnoter.git
 conda create -n auto python=3.9 -y
 conda activate auto
 conda install pytorch==1.12.1 torchvision==0.13.1 torchaudio==0.12.1 cudatoolkit=11.3 -c pytorch -y
-pip install triton==2.0.0
-pip install super-gradients
-pip install ultralytics
-git clone https://github.com/IDEA-Research/GroundingDINO.git
-pip install -e GroundingDINO/
 pip install -r requirements.txt
 ```
 #### OR
 ```
 cd autoAnnoter/
-git clone https://github.com/IDEA-Research/GroundingDINO.git
 pip install -r requirements.txt
-pip install -e GroundingDINO/
 ```
 
 ## 1. Grounding DINO 🦕
