@@ -11,3 +11,7 @@ RUN apt-get update && \
 RUN git clone https://github.com/naseemap47/autoAnnoter.git home
 WORKDIR /home
 RUN pip install -r requirements.txt
+RUN pip install triton==2.0.0 super-gradients
+RUN pip install ultralytics lxml onnxruntime streamlit wget
+RUN pip install transformers addict yapf timm supervision==0.6.0
+RUN pip install -e GroundingDINO/
