@@ -5,3 +5,9 @@ lxml
 onnxruntime
 streamlit
 wget
+transformers
+addict
+yapf
+timm
+supervision==0.6.0
+-e GroundingDINO/
