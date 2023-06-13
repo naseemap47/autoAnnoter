@@ -1,6 +1,13 @@
-super-gradients
 triton==2.0.0
+super-gradients
 ultralytics
 lxml
 onnxruntime
 streamlit
+wget
+transformers
+addict
+yapf
+timm
+supervision==0.6.0
+-e GroundingDINO/
