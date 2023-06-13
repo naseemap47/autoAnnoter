@@ -1,6 +1,7 @@
-super-gradients
 triton==2.0.0
+super-gradients
 ultralytics
 lxml
 onnxruntime
 streamlit
+wget
