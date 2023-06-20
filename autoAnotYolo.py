@@ -30,8 +30,13 @@ ap.add_argument("-c", "--confidence", type=float, required=True,
                 help="Model detection Confidence (0<confidence<1)")
 ap.add_argument("-r", "--remove", nargs='+', default=[],
                 help="List of classes need to remove")
+ap.add_argument("-k", "--keep", nargs='+', default=[],
+                help="List of classes need to keep")
 args = vars(ap.parse_args())
 
+
+if len(args['remove'])>0 and len(args['keep'])>0:
+    print('[INFO] use remove or keep NOT both...')
 
 if args['model_type'] == 'yolov7':
     # Load YOLOv7 Model
@@ -46,23 +51,33 @@ if args['model_type'] == 'yolov8':
     class_name_list = [x for _, x in model.names.items()]
 
 if args['model_type'] == 'yolonas':
-    # Load YOLO-NAS Model
-    if args['yaml'] is None:
-        print('[ERROR] Please give path to yaml file')
+    if args['model'] == 'coco':
+        # Load YOLO-NAS Model
+        if args['type'] is None:
+            print('[ERROR] Please give YOLO-NAS Model type')
+        else:
+            model = models.get(
+                args['type'], 
+                pretrained_weights=args['model']
+            )
     else:
-        yaml_params = yaml.safe_load(open(args['yaml'], 'r'))
+        # Load YOLO-NAS Model
+        if args['yaml'] is None:
+            print('[ERROR] Please give path to yaml file')
+        else:
+            yaml_params = yaml.safe_load(open(args['yaml'], 'r'))
 
-    if args['type'] is None:
-        print('[ERROR] Please YOLO-NAS Model type')
-    else:
-        model = models.get(
-            args['type'], 
-            checkpoint_path=args['model'], 
-            num_classes=len(yaml_params['names'])
-        )
+        if args['type'] is None:
+            print('[ERROR] Please YOLO-NAS Model type')
+        else:
+            model = models.get(
+                args['type'], 
+                checkpoint_path=args['model'], 
+                num_classes=len(yaml_params['names'])
+            )
+        
+        # GPU
         model = model.to("cuda" if torch.cuda.is_available() else "cpu")
-        # Class Names
-        class_name_list = yaml_params['names']
 
 
 img_list = glob.glob(os.path.join(args["dataset"], '*.jpg')) + \
@@ -75,11 +90,11 @@ for img in img_list:
     h, w, c = image.shape
 
     if args['model_type'] == 'yolov7':
-        bbox_list, class_list, confidence = get_BBoxYOLOv7(image, model, args['confidence'], class_name_list, args['remove'])
+        bbox_list, class_list, confidence = get_BBoxYOLOv7(image, model, args['confidence'], class_name_list, args['remove'], args['keep'])
     if args['model_type'] == 'yolov8':
-        bbox_list, class_list, confidence = get_BBoxYOLOv8(image, model, args['confidence'], class_name_list, args['remove'])
+        bbox_list, class_list, confidence = get_BBoxYOLOv8(image, model, args['confidence'], class_name_list, args['remove'], args['keep'])
     if args['model_type'] == 'yolonas':
-        bbox_list, class_list, confidence = get_BBoxYOLONAS(image, model, args['confidence'], class_name_list, args['remove'])
+        bbox_list, class_list, confidence, class_name_list = get_BBoxYOLONAS(image, model, args['confidence'], args['remove'], args['keep'])
 
     save_yolo(folder_name, file_name, w, h, bbox_list, class_list)
     print(f'Successfully Annotated {file_name}')

@@ -107,7 +107,8 @@ python3 dino.py --dataset images/ --prompt prompt.json
   `-m`, `--model`: path to ONNX model <br>
   `-s`, `--size`: Size of image used to train the model <br>
   `-conf`, `--confidence`: Model detection Confidence (0<confidence<1) <br>
-  `-r`, `--remove`: List of classes need to remove
+  `-r`, `--remove`: List of classes need to remove <br>
+  `-k`, `--keep`: List of classes need to keep
 
 </details>
 
@@ -128,6 +129,12 @@ python3 autoAnnot.py --txt --dataset images/ --classes classes.txt \
                      --model models/model.onnx --size 224 --confidence 0.75 \
                      --remove 'person' 'car
 ```
+**To Keep classes from auto-annotation**
+```
+python3 autoAnnot.py --txt --dataset images/ --classes classes.txt \
+                     --model models/model.onnx --size 224 --confidence 0.75 \
+                     --keep 'person' 'car
+```
 ## 3. YOLO Model
 
 <details>
@@ -138,6 +145,7 @@ python3 autoAnnot.py --txt --dataset images/ --classes classes.txt \
   `-m`, `--model`: path to best.pt (YOLO) model <br>
   `-conf`, `--confidence`: Model detection Confidence (0<confidence<1) <br>
   `-r`, `--remove`: List of classes need to remove <br>
+  `-k`, `--keep`: List of classes need to keep <br>
   
   for **YOLO-NAS** Model <br>
   `-t`, `--type`: Choose YOLO-NAS model type <br> **example**: `yolo_nas_s`, `yolo_nas_m`, `yolo_nas_l` <br>
@@ -147,8 +155,8 @@ python3 autoAnnot.py --txt --dataset images/ --classes classes.txt \
 
 </details>
 
-### Examples:
-#### 1. YOLOv7 Model
+## Examples:
+### 1. YOLOv7 Model
 ```
 python3 autoAnotYolo.py --dataset dataset/images --model_type yolov7 \
                         --model runs/train/weights/best.pt --confidence 0.8
@@ -159,8 +167,14 @@ python3 autoAnotYolo.py --dataset dataset/images --model_type yolov7 \
                         --model runs/train/weights/best.pt --confidence 0.8 \
                         --remove 'bus'
 ```
+- **To Keep classes from auto-annotation**
+```
+python3 autoAnotYolo.py --dataset dataset/images --model_type yolov7 \
+                        --model runs/train/weights/best.pt --confidence 0.8 \
+                        --keep 'bus'
+```
 
-#### 2. YOLOv8 Model
+### 2. YOLOv8 Model
 ```
 python3 autoAnotYolo.py --dataset dataset/images --model_type yolov8 \
                         --model runs/train/weights/best.pt --confidence 0.8
@@ -171,19 +185,40 @@ python3 autoAnotYolo.py --dataset dataset/images --model_type yolov8 \
                         --model runs/train/weights/best.pt --confidence 0.8 \
                         --remove 'elephant' 'cat' 'bear'
 ```
+- **To Keep classes from auto-annotation**
+```
+python3 autoAnotYolo.py --dataset dataset/images --model_type yolov8 \
+                        --model runs/train/weights/best.pt --confidence 0.8 \
+                        --keep 'cat'
+```
 
-#### 3. YOLO-NAS Model
+### 3. YOLO-NAS Model
+#### Custom Model
 ```
 python3 autoAnotYolo.py --dataset dataset/images --model_type yolonas \
                         --model runs/train/weights/best.pt --type yolo_nas_s \
                         --yaml my_data/data/yaml --confidence 0.8
 ```
+#### COCO Model
+```
+python3 autoAnotYolo.py --dataset dataset/images --model_type yolonas \
+                        --model coco --type yolo_nas_s \
+                        --confidence 0.8
+```
+
 - **To Remove classes from auto-annotation**
 ```
 python3 autoAnotYolo.py --dataset dataset/images --model_type yolonas \
                         --model runs/train/weights/best.pt --type yolo_nas_s \
                         --yaml my_data/data/yaml --confidence 0.8 \
                         --remove 'car'
+```
+- **To Keep classes from auto-annotation**
+```
+python3 autoAnotYolo.py --dataset dataset/images --model_type yolonas \
+                        --model runs/train/weights/best.pt --type yolo_nas_s \
+                        --yaml my_data/data/yaml --confidence 0.8 \
+                        --keep 'car'
 ```
 
 
