@@ -243,7 +243,7 @@ def get_BBoxYOLONAS(img, yolo_model, detect_conf, class_name_list, remove_list):
             # Remove specfic classes from Annotation
             if not remove_class(class_name_list, int(cs), remove_list):
                 # BBox
-                bbox_list.append([box[:4]])
+                bbox_list.append(box[:4])
                 # class
                 class_ids.append(int(cs+1))
                 # Confidence
