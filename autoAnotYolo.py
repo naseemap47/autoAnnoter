@@ -30,8 +30,13 @@ ap.add_argument("-c", "--confidence", type=float, required=True,
                 help="Model detection Confidence (0<confidence<1)")
 ap.add_argument("-r", "--remove", nargs='+', default=[],
                 help="List of classes need to remove")
+ap.add_argument("-k", "--keep", nargs='+', default=[],
+                help="List of classes need to keep")
 args = vars(ap.parse_args())
 
+
+if len(args['remove'])>0 and len(args['keep'])>0:
+    print('[INFO] use remove or keep NOT both...')
 
 if args['model_type'] == 'yolov7':
     # Load YOLOv7 Model
@@ -75,11 +80,11 @@ for img in img_list:
     h, w, c = image.shape
 
     if args['model_type'] == 'yolov7':
-        bbox_list, class_list, confidence = get_BBoxYOLOv7(image, model, args['confidence'], class_name_list, args['remove'])
+        bbox_list, class_list, confidence = get_BBoxYOLOv7(image, model, args['confidence'], class_name_list, args['remove'], args['keep'])
     if args['model_type'] == 'yolov8':
-        bbox_list, class_list, confidence = get_BBoxYOLOv8(image, model, args['confidence'], class_name_list, args['remove'])
+        bbox_list, class_list, confidence = get_BBoxYOLOv8(image, model, args['confidence'], class_name_list, args['remove'], args['keep'])
     if args['model_type'] == 'yolonas':
-        bbox_list, class_list, confidence = get_BBoxYOLONAS(image, model, args['confidence'], class_name_list, args['remove'])
+        bbox_list, class_list, confidence = get_BBoxYOLONAS(image, model, args['confidence'], class_name_list, args['remove'], args['keep'])
 
     save_yolo(folder_name, file_name, w, h, bbox_list, class_list)
     print(f'Successfully Annotated {file_name}')
