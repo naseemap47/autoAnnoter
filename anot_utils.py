@@ -249,7 +249,7 @@ def get_BBoxYOLOv8(img, yolo_model, detect_conf, class_name_list, remove_list, k
                     confidence.append(cnf)
 
                 # Keep specfic classes from Annotation
-                if remove_class(class_name_list, int(cs), remove_list):
+                if remove_class(class_name_list, int(cs), keep_list):
                     # BBox
                     bbox_list.append([xmin, ymin, xmax, ymax])
                     # class
@@ -286,7 +286,7 @@ def get_BBoxYOLONAS(img, yolo_model, detect_conf, remove_list, keep_list):
                 confidence.append(cnf)
 
             # Keep specfic classes from Annotation
-            if remove_class(class_name_list, int(cs), remove_list):
+            if remove_class(class_name_list, int(cs), keep_list):
                 # BBox
                 bbox_list.append(box[:4])
                 # class
