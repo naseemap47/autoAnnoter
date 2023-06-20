@@ -271,7 +271,6 @@ def get_BBoxYOLONAS(img, yolo_model, detect_conf, remove_list, keep_list):
     img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     preds = next(yolo_model.predict(img_rgb)._images_prediction_lst)
     class_name_list = preds.class_names
-    print(class_name_list)
     dp = preds.prediction
     bboxes, confs, labels = np.array(dp.bboxes_xyxy), dp.confidence, dp.labels.astype(int)
     for box, cnf, cs in zip(bboxes, confs, labels):
