@@ -29,7 +29,7 @@ args = vars(ap.parse_args())
 
 if len(args['remove'])>0 and len(args['keep'])>0:
     print('[INFO] use remove or keep NOT both...')
-    
+
 # ONNX Model
 onnx_session = onnxruntime.InferenceSession(args['model'])
 
@@ -42,7 +42,7 @@ for img in img_list:
     image = cv2.imread(img)
     h, w, c = image.shape
     bbox_list, class_list, confidence = findBBox(
-        onnx_session, image, args['size'], args['confidence'], class_names, args['remove'])
+        onnx_session, image, args['size'], args['confidence'], class_names, args['remove'], args['keep'])
     folder_name, file_name = os.path.split(img)
     # XML Annotation
     if args['xml']:
