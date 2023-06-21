@@ -10,6 +10,7 @@ import cv2
 import os
 import wget
 import argparse
+from tqdm import tqdm
 
 
 ap = argparse.ArgumentParser()
@@ -50,13 +51,13 @@ model = load_model(
     "groundingdino_swint_ogc.pth"
 )
 
-img_list = glob.glob(os.path.join(args["dataset"], '*.jpg')) + \
+img_list = sorted(glob.glob(os.path.join(args["dataset"], '*.jpg')) + \
     glob.glob(os.path.join(args["dataset"], '*.jpeg')) + \
-    glob.glob(os.path.join(args["dataset"], '*.png'))
+    glob.glob(os.path.join(args["dataset"], '*.png')))
 
-for img_path in img_list:
-    folder_name, file_name = os.path.split(img_path)
-    img = cv2.imread(img_path)
+for i in tqdm(range(len(img_list))):
+    folder_name, file_name = os.path.split(img_list[i])
+    img = cv2.imread(img_list[i])
     h, w, _ = img.shape
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     img = Image.fromarray(img)
@@ -69,11 +70,14 @@ for img_path in img_list:
         box_threshold=args['box_thld'], 
         text_threshold=args['txt_thld']
     )
-    class_list = [int(list(txt_prompt).index(value)+1) for value in phrases]
-    bbox_list = bbox_list * torch.Tensor([w, h, w, h])
-    bbox_list = box_cxcywh_to_xyxy(boxes=bbox_list).numpy()
-    save_yolo(folder_name, file_name, w, h, bbox_list, class_list)
-    print(f'Successfully Annotated {file_name}')
+    try:
+        class_list = [int(list(txt_prompt).index(value)+1) for value in phrases]
+        bbox_list = bbox_list * torch.Tensor([w, h, w, h])
+        bbox_list = box_cxcywh_to_xyxy(boxes=bbox_list).numpy()
+        save_yolo(folder_name, file_name, w, h, bbox_list, class_list)
+        # print(f'Successfully Annotated {file_name}')
+    except:
+        print(f"[INFO] Failed get bounding boxes from {img_list[i]}")
 
 # Save Labe Map
 with open(os.path.join(args['dataset'], 'classes.txt'), "w") as output:
