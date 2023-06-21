@@ -174,7 +174,7 @@ def save_yolo(folder_name, file_name, w, h, bbox_list, class_list):
         out_file.write("%d %.6f %.6f %.6f %.6f\n" %
                        (int(class_index-1), x_center, y_center, width, height))
 
-    print(f'Successfully Created {txt_name}')
+    # print(f'Successfully Created {txt_name}')
 
 
 # YOLOv7
