@@ -18,20 +18,19 @@ ap.add_argument("-mt", "--model_type", type=str, required=True,
                 help="Choose YOLO model")
 ap.add_argument("-m", "--model", type=str, required=True,
                 help="path to best.pt (YOLOv7) model")
-
-# If its YOLO-NAS its need 2 more args
-ap.add_argument("-t", "--type", type=str,
-                choices=['yolo_nas_s', 'yolo_nas_m', 'yolo_nas_l'],
-                help="YOLO-NAS Model type")
-ap.add_argument("-y", "--yaml", type=str,
-                help="path to data.yaml")
-
 ap.add_argument("-c", "--confidence", type=float, required=True,
                 help="Model detection Confidence (0<confidence<1)")
 ap.add_argument("-r", "--remove", nargs='+', default=[],
                 help="List of classes need to remove")
 ap.add_argument("-k", "--keep", nargs='+', default=[],
                 help="List of classes need to keep")
+
+# If its YOLO-NAS its need 2 more args
+ap.add_argument("-t", "--type", type=str,
+                choices=['yolo_nas_s', 'yolo_nas_m', 'yolo_nas_l'],
+                help="YOLO-NAS Model type")
+ap.add_argument("-n", "--num", type=int, required=True,
+                help="number of classes")
 args = vars(ap.parse_args())
 
 
@@ -62,18 +61,13 @@ if args['model_type'] == 'yolonas':
             )
     else:
         # Load YOLO-NAS Model
-        if args['yaml'] is None:
-            print('[ERROR] Please give path to yaml file')
-        else:
-            yaml_params = yaml.safe_load(open(args['yaml'], 'r'))
-
         if args['type'] is None:
             print('[ERROR] Please YOLO-NAS Model type')
         else:
             model = models.get(
                 args['type'], 
                 checkpoint_path=args['model'], 
-                num_classes=len(yaml_params['names'])
+                num_classes=args['num']
             )
         
         # GPU
