@@ -149,8 +149,7 @@ python3 autoAnnot.py --txt --dataset images/ --classes classes.txt \
   
   for **YOLO-NAS** Model <br>
   `-t`, `--type`: Choose YOLO-NAS model type <br> **example**: `yolo_nas_s`, `yolo_nas_m`, `yolo_nas_l` <br>
-  `-y`, `--yaml`: path to data.yaml file <br>
-  Example: [data.yaml](https://github.com/naseemap47/YOLO-NAS/blob/master/data.yaml)
+  `-n`, `--num`: number of classes that model trained on
     
 
 </details>
@@ -197,7 +196,7 @@ python3 autoAnotYolo.py --dataset dataset/images --model_type yolov8 \
 ```
 python3 autoAnotYolo.py --dataset dataset/images --model_type yolonas \
                         --model runs/train/weights/best.pt --type yolo_nas_s \
-                        --yaml my_data/data/yaml --confidence 0.8
+                        --num 8 --confidence 0.8
 ```
 #### COCO Model
 ```
@@ -210,14 +209,14 @@ python3 autoAnotYolo.py --dataset dataset/images --model_type yolonas \
 ```
 python3 autoAnotYolo.py --dataset dataset/images --model_type yolonas \
                         --model runs/train/weights/best.pt --type yolo_nas_s \
-                        --yaml my_data/data/yaml --confidence 0.8 \
+                        --num 80 --confidence 0.8 \
                         --remove 'car'
 ```
 - **To Keep classes from auto-annotation**
 ```
 python3 autoAnotYolo.py --dataset dataset/images --model_type yolonas \
                         --model runs/train/weights/best.pt --type yolo_nas_s \
-                        --yaml my_data/data/yaml --confidence 0.8 \
+                        --num 32 --confidence 0.8 \
                         --keep 'car'
 ```
 
