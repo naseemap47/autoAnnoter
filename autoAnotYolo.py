@@ -7,7 +7,6 @@ from anot_utils import save_yolo, get_BBoxYOLOv7, get_BBoxYOLOv8, get_BBoxYOLONA
 from ultralytics import YOLO
 from super_gradients.training import models
 import torch
-import yaml
 
 
 ap = argparse.ArgumentParser()
