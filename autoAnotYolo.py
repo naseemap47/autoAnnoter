@@ -97,7 +97,7 @@ for img in img_list:
         bbox_list, class_list, confidence, class_name_list = get_BBoxYOLONAS(image, model, args['confidence'], args['remove'], args['keep'])
 
     save_yolo(folder_name, file_name, w, h, bbox_list, class_list)
-    print(f'Successfully Annotated {file_name}')
+    # print(f'Successfully Annotated {file_name}')
 
 # Save Labe Map
 with open(f"{args['dataset']}/classes.txt", "w") as output:
