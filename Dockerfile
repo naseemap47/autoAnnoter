@@ -9,4 +9,7 @@ RUN apt-get update && \
     libsm6 \
     libxext6
 WORKDIR /home
-RUN pip install -r requirements.txt
+RUN pip install super-gradients
+RUN pip install ultralytics lxml onnxruntime streamlit wget
+RUN pip install transformers addict yapf timm supervision==0.6.0
+RUN pip install -e GroundingDINO/
