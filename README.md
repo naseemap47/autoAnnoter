@@ -3,15 +3,19 @@
 
 autoAnnoter: Its a tool to auto annotate data using a exisiting model
 
-## We can auto annotate any class 🚀 New Update (12-06-2023)
-### 🥳 Auto Annotate using Grounding DINO Model 🦕
-We can auto annotate **any class** on our data using new Grounding DINO model.<br>
+## Auto annotate any class 🚀 New Update (17-08-2023)
+### 🥳 Auto Annotate using OWL-ViT Model
+We can auto annotate **any class** on our data using new OWL-ViT model.<br>
 No need of any pre-trained or any custom model to auto-annotate.
 
-### About Grounding DINO 🦕
-Grounding DINO, by marrying **Transformer-based detector** DINO with grounded pre-training, which can detect arbitrary objects with human inputs such as category names or referring expressions. 
+### About OWL-ViT
+**OWL-ViT** is an open-vocabulary object detector. It means that it can detect objects in images based on free-text queries without the need to fine-tune the model on labeled datasets.
 
 ## Updates
+<details>
+  <summary>Show</summary>
+  
+- (**12-06-2023**) **Grounding DINO** 🦕 auto annotate any class
 - (**01-06-2023**) **YOLO-NAS** Auto Annotation
   - Auto Annotate using YOLO-NAS Model
 - (**25-04-2023**): We can remove any classes from auto annotation. So that we can create new set of dataset using existing model.
@@ -36,6 +40,8 @@ Grounding DINO, by marrying **Transformer-based detector** DINO with grounded pr
     - **xml_neg_annotation.py** : Annoatate your **Negative Dataset**
     - **find_oneClass_from_xml.py** : To filter your **PASCAL VOC** annotaion **XML** file based on **class name**
 
+</details>
+
 ## Clone this GitHub Repository
 ```
 git clone https://github.com/naseemap47/autoAnnoter.git
@@ -54,9 +60,13 @@ cd autoAnnoter/
 pip install torch==1.12.1+cu113 torchvision==0.13.1+cu113 torchaudio==0.12.1 --extra-index-url https://download.pytorch.org/whl/cu113
 pip install -r requirements.txt
 ```
+## Zero-shot object detection
+### 1. Grounding DINO 🦕
+**Grounding DINO** is text to detection model. So we need to give text prompt that correspond to respective class.<br>
+### 2. OWL-ViT (Recommended)
+**OWL-ViT** is an open-vocabulary object detector. It means that it can detect objects in images based on free-text queries without the need to fine-tune the model on labeled datasets..<br>
 
-## 1. Grounding DINO 🦕
-Grounding DINO is text to detection model. So we need to give text prompt that correspond to respective class.<br>
+## Auto annotate any class
 To do this, we needs to create [prompt.json](https://github.com/naseemap47/autoAnnoter/blob/dino/prompt.json) <br>
 
 **JSON keys** should be text prompt to Grounding DINO model.<br>
@@ -64,8 +74,8 @@ But the values for the each keys should be **class names** for that detection.<b
 
 ### Example:
 Here I need to train one custom model that can predict **high quality cap** and **low quality cap**.<br>
-So for this I give my **Grounding DINO** text prompt as **red cap** and **yellow caps**, to annotate my **high quality cap** and **low quality cap** classes.<br>
-I give this example to show you that, some times we need to give **Grounding DINO** text prompt as more elaborate way, like my example.
+So for this I give my **Grounding DINO/OWL-ViT** text prompt as **red cap** and **yellow caps**, to annotate my **high quality cap** and **low quality cap** classes.<br>
+I give this example to show you that, some times we need to give **Grounding DINO/OWL-ViT** text prompt as more elaborate way, like my example.
 
 ![out11](https://github.com/naseemap47/autoAnnoter/assets/88816150/df2ebb71-ad67-4bce-9099-cd9857a4cfcd)
 
@@ -77,6 +87,25 @@ I give this example to show you that, some times we need to give **Grounding DIN
 }
 ``` 
 ### This approch we can use when the object is same, but have different feature like color.
+### 1. OWL-ViT (Recommended)
+
+<details>
+  <summary>Args</summary>
+  
+  `-i`, `--dataset`: path to dataset/dir <br>
+  `-p`, `--prompt`: path to prompt.json <br>
+  `-bt`, `--box_thld`: bounding box Threshold
+  
+</details>
+
+To auto-annotate **OWL-ViT** model, we need to give text prompt that correspond to respective class. 
+
+**Example:**
+```
+python3 owlvit.py --dataset images/ --prompt prompt.json
+```
+
+### 2. Grounding DINO 🦕
 
 <details>
   <summary>Args</summary>
