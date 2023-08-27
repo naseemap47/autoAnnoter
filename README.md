@@ -389,3 +389,18 @@ python3 tools/vis_txt.py -i path_to/image -t path_to/txt -c path_to_classes.txt
 # to save image
 python3 tools/vis_txt.py -i path_to/image -t path_to/txt -c path_to_classes.txt --save
 ```
+
+### 8. create_yolo.py:
+to convert mixed images & labels into respective directory of images and labels
+
+<details>
+  <summary>Args</summary>
+  
+  `-i`, `--data` : path to image/dir/data
+
+</details>
+
+**Example:**
+```
+python3 tools/create_yolo.py -i path_to/data Dir
+```
