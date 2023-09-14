@@ -432,3 +432,20 @@ to convert mixed images & labels into respective directory of images and labels
 ```
 python3 tools/create_yolo.py -i path_to/data Dir
 ```
+
+### 9. yolo_to_kitti.py:
+to convert YOLO annotations (.txt) to KITTI format
+
+<details>
+  <summary>Args</summary>
+  
+  `-i`, `--img` : path to image file <br>
+  `-t`, `--txt` : path to txt file <br>
+  `-c`, `--classes` : path to classes.txt
+
+</details>
+
+**Example:**
+```
+python3 tools/yolo_to_kitti.py -i path_to/image -t path_to/txt -c path_to_classes.txt
+```
