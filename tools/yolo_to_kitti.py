@@ -17,7 +17,7 @@ path_to_img = args["image"]
 path_to_txt = args['txt']
 path_to_class = args['classes']
 
-os.makedirs("KITTI_"+path_to_txt, exist_ok=True)
+os.makedirs(f"{path_to_txt}_KITTI", exist_ok=True)
 txt_list = sorted(glob.glob(f'{path_to_txt}/*.txt'))
 img_full_list = glob.glob(f'{path_to_img}/*.jpeg') + \
                 glob.glob(f'{path_to_img}/*.jpg')  + \
@@ -66,7 +66,8 @@ for txt, img in zip(txt_list, img_list):
     
     strf = " ".join(str(x) for x in data)
     strf = strf.replace("\n ","\n")
-    file = open("KITTI_"+txt, "w")
+    txt_name = os.path.split(txt)[1]
+    file = open(f"{path_to_txt}_KITTI/{txt_name}", "w")
     file.write(strf)
     file.close()
-    print(f"[INFO] Completed {txt}")
+    print(f"[INFO] Completed {txt_name}")
