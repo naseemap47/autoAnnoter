@@ -342,7 +342,7 @@ apple
 ```
 python3 tools/xml_to_txt.py -i path_to/imageDir -x path_to/xml_Dir -c path_to/classes.txt
 ```
-  
+
 ### 4. xml_neg_annotation.py:
 Annoatate your **Negative Dataset**
 
@@ -448,4 +448,28 @@ to convert YOLO annotations (.txt) to KITTI format
 **Example:**
 ```
 python3 tools/yolo_to_kitti.py -i path_to/image -t path_to/txt -c path_to_classes.txt
+```
+
+### 10. yolo_to_json.py:
+Convert your **TXT (YOLO)** Annotation files into **COCO JSON** Format
+
+<details>
+  <summary>Args</summary>
+  
+  `-i`, `--image` : path to image/dir <br>
+  `-t`, `--txt` : path to txt/dir <br>
+  `-c`, `--classes` : path to classes.txt
+  
+</details>
+    
+**classes.txt Example:**
+```
+car
+person
+apple
+....
+```
+**Example:**
+```
+python3 tools/txt_to_json.py -i path_to/imageDir -t path_to/txt_Dir -c path_to/classes.txt
 ```
