@@ -471,5 +471,5 @@ apple
 ```
 **Example:**
 ```
-python3 tools/txt_to_json.py -i path_to/imageDir -t path_to/txt_Dir -c path_to/classes.txt
+python3 tools/yolo_to_json.py -i path_to/imageDir -t path_to/txt_Dir -c path_to/classes.txt
 ```
