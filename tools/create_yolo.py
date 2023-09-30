@@ -21,24 +21,24 @@ img_list = glob.glob(os.path.join(args["data"], '*.jpg')) + \
     glob.glob(os.path.join(args["data"], '*.png'))
 
 if len(img_list)>0:
-    os.makedirs('images', exist_ok=True)
+    os.makedirs(os.path.join(args["data"], 'images'), exist_ok=True)
 
-txt_list = glob.glob(args["data"], '*.txt')
-xml_list = glob.glob(args["data"], '*.xml')
+txt_list = glob.glob(os.path.join(args["data"], '*.txt'))
+xml_list = glob.glob(os.path.join(args["data"], '*.xml'))
 
 if len(txt_list)>0 and len(xml_list) == 0:
-    os.makedirs('labels', exist_ok=True)
+    os.makedirs(os.path.join(args["data"], 'labels'), exist_ok=True)
     move_file(img_list, os.path.join(args["data"], 'images'))
     move_file(txt_list, os.path.join(args["data"], 'labels'))
     
 elif len(txt_list) == 0 and len(xml_list)>0:
-    os.makedirs('labels', exist_ok=True)
+    os.makedirs(os.path.join(args["data"], 'labels'), exist_ok=True)
     move_file(img_list, os.path.join(args["data"], 'images'))
     move_file(xml_list, os.path.join(args["data"], 'labels'))
 
 elif len(txt_list)>0 and len(xml_list)>0:
-    os.makedirs('txt_labels', exist_ok=True)
-    os.makedirs('xml_labels', exist_ok=True)
+    os.makedirs(os.path.join(args["data"], 'txt_labels'), exist_ok=True)
+    os.makedirs(os.path.join(args["data"], 'xml_labels'), exist_ok=True)
     move_file(img_list, os.path.join(args["data"], 'images'))
     move_file(txt_list, os.path.join(args["data"], 'txt_labels'))
     move_file(xml_list, os.path.join(args["data"], 'xml_labels'))
