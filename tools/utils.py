@@ -105,3 +105,25 @@ def write_xml(img_path, bbox_list, class_list, path_to_save_with_name):
         file.write(xml_str.decode('utf8'))
 
     print(f"[INFO] Saved: {path_to_save_with_name}")
+
+
+def get_txt(path_to_txt, path_to_img):
+    img_file = cv2.imread(path_to_img)
+    height_n, width_n, depth_n = img_file.shape
+    
+    txt_file = open(path_to_txt, 'r+')
+    lines = txt_file.read().splitlines()
+    obj_list = []
+    class_list = []
+    for line in lines:
+        class_index, x_center, y_center, width, height = line.split()
+        xmax = int((float(x_center)*width_n) + (float(width) * width_n)/2.0)
+        xmin = int((float(x_center)*width_n) - (float(width) * width_n)/2.0)
+        ymax = int((float(y_center)*height_n) + (float(height) * height_n)/2.0)
+        ymin = int((float(y_center)*height_n) - (float(height) * height_n)/2.0)
+        bbox = [int(xmin), int(ymin), int(xmax), int(ymax)]
+
+        obj_list.append(bbox)
+        class_list.append(int(class_index))
+    
+    return obj_list, class_list
