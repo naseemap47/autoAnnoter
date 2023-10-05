@@ -1,10 +1,12 @@
-import random
-import numpy as np
-import cv2
+from bbox_util import clip_box, rotate_box, rotate_im, get_corners, \
+    get_enclosing_box, letterbox_image
 import matplotlib.pyplot as plt
+import numpy as np
+import random
+import cv2
 import sys
 import os
-from data_aug.bbox_util import *
+
 
 lib_path = os.path.join(os.path.realpath("."), "data_aug")
 sys.path.append(lib_path)
