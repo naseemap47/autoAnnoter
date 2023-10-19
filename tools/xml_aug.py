@@ -5,7 +5,7 @@ import os
 import cv2
 import argparse
 import numpy as np
-from utils import get_xml, write_xml
+from tool_utils import get_xml, write_xml
 
 
 ap = argparse.ArgumentParser()

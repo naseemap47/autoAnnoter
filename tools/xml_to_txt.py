@@ -2,7 +2,7 @@ import glob
 import os
 import cv2
 import argparse
-from utils import get_xml
+from tool_utils import get_xml
 
 
 ap = argparse.ArgumentParser()
