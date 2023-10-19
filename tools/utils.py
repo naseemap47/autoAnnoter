@@ -127,3 +127,18 @@ def get_txt(path_to_txt, path_to_img):
         class_list.append(int(class_index))
     
     return obj_list, class_list
+
+
+def write_txt(path_to_save, bbox_list, class_list, h, w):
+    out_file = open(path_to_save, 'w')
+    if len(bbox_list)>0:
+        for bbox, class_id in zip(bbox_list, class_list):
+            xmin, ymin, xmax, ymax = bbox
+            x_center = float((xmin + xmax)) / 2 / w
+            y_center = float((ymin + ymax)) / 2 / h
+            width = float((xmax - xmin)) / w
+            height = float((ymax - ymin)) / h
+            
+            # Save
+            out_file.write("%d %.6f %.6f %.6f %.6f\n" %
+                        (class_id, x_center, y_center, width, height))
