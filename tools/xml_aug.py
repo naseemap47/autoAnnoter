@@ -1,5 +1,5 @@
 from data_aug import RandomHorizontalFlip, RandomScale, RandomTranslate, \
-    RandomRotate, RandomShear, Resize, RandomHSV, Sequence
+    RandomRotate, RandomShear, Resize, RandomHSV, Sequence, Rotate
 import glob
 import os
 import cv2
@@ -41,6 +41,7 @@ for xml_path, img_path in zip(xml_list, img_list):
         bbox_list = np.array(bbox_list, dtype=np.float64)
         if c%3 == 0:
             img_aug, bbox_aug = RandomHorizontalFlip(1)(img.copy(), bbox_list.copy())
+            img_aug, bbox_aug = Rotate(180)(img.copy(), bbox_list.copy())
         elif c%4 == 0:
             img_aug, bbox_aug = RandomScale(0.3, diff = True)(img.copy(), bbox_list.copy())
         elif c%5 == 0:
