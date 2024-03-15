@@ -35,6 +35,12 @@ degrees:
   deg: 10         # image rotation (+/- deg)
   prob: 0.2       # image rotation (probability)
 
+# Random image rotation
+degrees_random:
+  deg: 10         # image rotation range (+deg, -deg)
+  prob: 0.2       # image rotation (probability)
+
+
 translate: 0.1 # (float) image translation (+/- fraction)
 scale: 0.5 # (float) image scale (+/- gain)
 shear: 0.0 # (float) image shear (+/- deg)
