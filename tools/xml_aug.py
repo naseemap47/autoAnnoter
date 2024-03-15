@@ -66,4 +66,8 @@ hsv_s_img = choice(img_list, total_prob, replace=False)
 generate_anot_RandomHSV(hsv_s_img, path_to_xml, saturation=data['hsv_s']['saturation'], path_to_save=path_to_save, name_id='hsv_s')
 
 # image HSV-Value (brightness) augmentation
+total_prob = int((data['hsv_v']['prob'])*len(img_list))
+hsv_v_img = choice(img_list, total_prob, replace=False)
+generate_anot_RandomHSV(hsv_v_img, path_to_xml, brightness=data['hsv_v']['brightness'], path_to_save=path_to_save, name_id='hsv_v')
+
 # Mixed image HSV augmentation (Mixed HSV-Hue, HSV-Saturation and HSV-Value (brightness))
