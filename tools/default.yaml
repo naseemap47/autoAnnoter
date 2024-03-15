@@ -1,0 +1,45 @@
+# Hyperparameters ------------------------------------------------------------------------------------------------------
+# image HSV-Hue augmentation
+hsv_h: 
+  # None: the hue of the image is left unchanged. 
+  # int: a random int is uniformly sampled from (-hue, hue) and added to the hue of the image. 
+  # tuple: the int is sampled from the range specified by the tuple 
+  hue: 100          # Range (0-179)
+  prob: 0.4         # image HSV-Hue augmentation (probability)
+
+# image HSV-Saturation augmentation
+hsv_s:
+  # None: the saturation of the image is left unchanged.
+  # int: a random int is uniformly sampled from (-saturation, saturation) and added to the hue of the image.
+  # tuple: the int is sampled from the range  specified by the tuple.
+  saturation: 212   # Range (0-255)
+  prob: 0.7         # image HSV-Saturation augmentation (probability)
+
+# image HSV-Value (brightness) augmentation
+hsv_v:
+  # None: the brightness of the image is left unchanged. 
+  # int: a random int is uniformly sampled from (-brightness, brightness) and added to the hue of the image.
+  # tuple: the int is sampled from the range  specified by the tuple.
+  brightness: 120   # Range (0-255)
+  prob: 0.4         # image HSV-Value (brightness) augmentation (probability)
+
+# Mixed image HSV augmentation (Mixed HSV-Hue, HSV-Saturation and HSV-Value (brightness))
+hsv:
+  hue: 2          # Range (0-179)
+  saturation: 2   # Range (0-255)
+  brightness: 2   # Range (0-255)
+  prob: 0.4       # Mixed image HSV augmentation (probability)
+
+degrees: 0.0 # (float) image rotation (+/- deg)
+translate: 0.1 # (float) image translation (+/- fraction)
+scale: 0.5 # (float) image scale (+/- gain)
+shear: 0.0 # (float) image shear (+/- deg)
+perspective: 0.0 # (float) image perspective (+/- fraction), range 0-0.001
+flipud: 0.0 # (float) image flip up-down (probability)
+fliplr: 0.5 # (float) image flip left-right (probability)
+mosaic: 1.0 # (float) image mosaic (probability)
+mixup: 0.0 # (float) image mixup (probability)
+copy_paste: 0.0 # (float) segment copy-paste (probability)
+auto_augment: randaugment # (str) auto augmentation policy for classification (randaugment, autoaugment, augmix)
+erasing: 0.4 # (float) probability of random erasing during classification training (0-1)
+crop_fraction: 1.0 # (float) image crop fraction for classification evaluation/inference (0-1)

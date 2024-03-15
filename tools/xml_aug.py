@@ -1,11 +1,34 @@
 from data_aug import RandomHorizontalFlip, RandomScale, RandomTranslate, \
     RandomRotate, RandomShear, Resize, RandomHSV, Sequence, Rotate
+from numpy.random import choice
 import glob
 import os
 import cv2
 import argparse
 import numpy as np
 from tool_utils import get_xml, write_xml
+import yaml
+
+
+def generate_anot_RandomHSV(image_list:list, path_to_labels:str, path_to_save:str, name_id:str, hue=None, saturation=None, brightness=None):
+    for img_path in image_list:
+        img_name = os.path.split(img_path)[1]
+        img = cv2.imread(img_path)
+
+        # Read XML
+        xml_path = f"{path_to_labels}/{os.path.splitext(img_name)[0]}.xml"
+        bbox_list, class_list = get_xml(xml_path)
+        if len(bbox_list) > 0:
+            # Augumentation
+            bbox_list = np.array(bbox_list, dtype=np.float64)
+            img_aug, bbox_aug = RandomHSV(hue, saturation, brightness)(img.copy(), bbox_list.copy())
+            if len(bbox_aug) > 0:
+                # save image
+                cv2.imwrite(f"{path_to_save}/{os.path.splitext(img_name)[0]}_{name_id}.jpg", img_aug)
+                # Save XML
+                xml_name = f"{os.path.splitext(img_name)[0]}_{name_id}.xml"
+                path_to_xml_save = f"{path_to_save}/{xml_name}"
+                write_xml(img_path, bbox_aug, class_list, path_to_xml_save)
 
 
 ap = argparse.ArgumentParser()
@@ -21,40 +44,26 @@ path_to_img = args["image"]
 path_to_xml = args['xml']
 path_to_save = args['save']
 
+
+with open('default.yaml', 'r') as f:
+	data = yaml.load(f, Loader=yaml.SafeLoader)
+print(data)
+
 os.makedirs(path_to_save, exist_ok=True)
-xml_list = sorted(glob.glob(f'{path_to_xml}/*.xml'))
 img_full_list = glob.glob(f'{path_to_img}/*.jpeg') + \
                 glob.glob(f'{path_to_img}/*.jpg')  + \
                 glob.glob(f'{path_to_img}/*.png')
 img_list = sorted(img_full_list)
 
-c = 0
-for xml_path, img_path in zip(xml_list, img_list):
-    c += 1
-    path_to_dir, img_name = os.path.split(img_path)
-    img = cv2.imread(img_path)
+# image HSV-Hue augmentation
+total_prob = int((data['hsv_h']['prob'])*len(img_list))
+hsv_h_img = choice(img_list, total_prob, replace=False)
+generate_anot_RandomHSV(hsv_h_img, path_to_xml, hue=data['hsv_h']['hue'], path_to_save=path_to_save, name_id='hsv_h')
 
-    # Read XML
-    bbox_list, class_list = get_xml(xml_path)
-    if len(bbox_list) > 0:
-        # Augumentation
-        bbox_list = np.array(bbox_list, dtype=np.float64)
-        if c%3 == 0:
-            img_aug, bbox_aug = RandomHorizontalFlip(1)(img.copy(), bbox_list.copy())
-            img_aug, bbox_aug = Rotate(180)(img.copy(), bbox_list.copy())
-        elif c%4 == 0:
-            img_aug, bbox_aug = RandomScale(0.3, diff = True)(img.copy(), bbox_list.copy())
-        elif c%5 == 0:
-            img_aug, bbox_aug = RandomRotate(20)(img.copy(), bbox_list.copy())
-        elif c%6 == 0:
-            img_aug, bbox_aug = RandomShear(0.2)(img.copy(), bbox_list.copy())
-        else:
-            bbox_aug = []
-    
-        if len(bbox_aug) > 0:
-            # save image
-            cv2.imwrite(f"{path_to_save}/{img_name}", img_aug)
-            # Save XML
-            xml_name = f"{os.path.splitext(img_name)[0]}.xml"
-            path_to_xml_save = f"{path_to_save}/{xml_name}"
-            write_xml(img_path, bbox_aug, class_list, path_to_xml_save)
+# image HSV-Saturation augmentation
+# total_prob = int((data['hsv_h']['prob'])*len(img_list))
+# hsv_h_img = choice(img_list, total_prob, replace=False)
+# generate_anot_RandomHSV(hsv_h_img, path_to_xml, data, path_to_save, 'hsv_h')
+
+# image HSV-Value (brightness) augmentation
+# Mixed image HSV augmentation (Mixed HSV-Hue, HSV-Saturation and HSV-Value (brightness))
