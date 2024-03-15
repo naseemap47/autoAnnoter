@@ -30,7 +30,11 @@ hsv:
   brightness: 2   # Range (0-255)
   prob: 0.4       # Mixed image HSV augmentation (probability)
 
-degrees: 0.0 # (float) image rotation (+/- deg)
+# image rotation
+degrees:
+  deg: 10         # image rotation (+/- deg)
+  prob: 0.2       # image rotation (probability)
+
 translate: 0.1 # (float) image translation (+/- fraction)
 scale: 0.5 # (float) image scale (+/- gain)
 shear: 0.0 # (float) image shear (+/- deg)

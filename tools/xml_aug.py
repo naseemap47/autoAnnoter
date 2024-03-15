@@ -31,6 +31,27 @@ def generate_anot_RandomHSV(image_list:list, path_to_labels:str, path_to_save:st
                 write_xml(img_path, bbox_aug, class_list, path_to_xml_save)
 
 
+def generate_anot_Rotate(image_list:list, path_to_labels:str, path_to_save:str, name_id:str, angle:int):
+    for img_path in image_list:
+        img_name = os.path.split(img_path)[1]
+        img = cv2.imread(img_path)
+
+        # Read XML
+        xml_path = f"{path_to_labels}/{os.path.splitext(img_name)[0]}.xml"
+        bbox_list, class_list = get_xml(xml_path)
+        if len(bbox_list) > 0:
+            # Augumentation
+            bbox_list = np.array(bbox_list, dtype=np.float64)
+            img_aug, bbox_aug = Rotate(angle)(img.copy(), bbox_list.copy())
+            if len(bbox_aug) > 0:
+                # save image
+                cv2.imwrite(f"{path_to_save}/{os.path.splitext(img_name)[0]}_{name_id}.jpg", img_aug)
+                # Save XML
+                xml_name = f"{os.path.splitext(img_name)[0]}_{name_id}.xml"
+                path_to_xml_save = f"{path_to_save}/{xml_name}"
+                write_xml(img_path, bbox_aug, class_list, path_to_xml_save)
+
+
 ap = argparse.ArgumentParser()
 ap.add_argument("-i", "--image", type=str, required=True,
                 help="path to image/dir")
@@ -74,3 +95,8 @@ generate_anot_RandomHSV(hsv_v_img, path_to_xml, brightness=data['hsv_v']['bright
 total_prob = int((data['hsv']['prob'])*len(img_list))
 hsv_img = choice(img_list, total_prob, replace=False)
 generate_anot_RandomHSV(hsv_img, path_to_xml, hue=data['hsv']['hue'], saturation=data['hsv']['saturation'], brightness=data['hsv']['brightness'], path_to_save=path_to_save, name_id='hsv')
+
+# image rotation augmentation
+total_prob = int((data['degrees']['prob'])*len(img_list))
+rot_img = choice(img_list, total_prob, replace=False)
+generate_anot_Rotate(rot_img, path_to_xml, path_to_save, 'rot', data['degrees']['deg'])

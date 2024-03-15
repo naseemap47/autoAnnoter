@@ -519,7 +519,7 @@ class Rotate(object):
         """
         
         angle = self.angle
-        print(self.angle)
+        # print(self.angle)
         
         w,h = img.shape[1], img.shape[0]
         cx, cy = w//2, h//2
