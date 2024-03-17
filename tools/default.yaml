@@ -63,7 +63,6 @@ shear_random:
   shear: 0.2
   prob: 0.2
 
-perspective: 0.0 # (float) image perspective (+/- fraction), range 0-0.001
 flipud: 0.0 # (float) image flip up-down (probability)
 fliplr: 0.5 # (float) image flip left-right (probability)
 mosaic: 1.0 # (float) image mosaic (probability)
