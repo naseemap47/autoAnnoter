@@ -1,6 +1,5 @@
-from data_aug import RandomScale, RandomTranslate, \
-    RandomRotate, RandomShear, Resize, RandomHSV, Sequence, Rotate, \
-    Translate, Scale, Shear, HorizontalFlip
+from data_aug import RandomHorizontalFlip, HorizontalFlip, RandomScale, Scale, RandomTranslate, Translate,\
+                    RandomRotate, Rotate, RandomShear, Shear, Resize, RandomHSV, Sequence
 from numpy.random import choice
 import glob
 import os
@@ -249,90 +248,91 @@ ap.add_argument("-x", "--xml", type=str, required=True,
                 help="path to xml/dir")
 ap.add_argument("-s", "--save", type=str, required=True,
                 help="path to save aug xml")
-
+ap.add_argument("-y", "--yaml", type=str, required=True,
+                help="path to aug yaml file")
 args = vars(ap.parse_args())
-path_to_img = args["image"]
-path_to_xml = args['xml']
-path_to_save = args['save']
 
 
-with open('default.yaml', 'r') as f:
+with open(args['yaml'], 'r') as f:
 	data = yaml.load(f, Loader=yaml.SafeLoader)
-print(data)
+print('Augmentation Params:\n', data)
 
-os.makedirs(path_to_save, exist_ok=True)
-img_full_list = glob.glob(f'{path_to_img}/*.jpeg') + \
-                glob.glob(f'{path_to_img}/*.jpg')  + \
-                glob.glob(f'{path_to_img}/*.png')
+os.makedirs(args['save'], exist_ok=True)
+img_full_list = glob.glob(f"{args['image']}/*.jpeg") + \
+                glob.glob(f"{args['image']}/*.jpg")  + \
+                glob.glob(f"{args['image']}/*.png")
 img_list = sorted(img_full_list)
 
 # image HSV-Hue augmentation
 total_prob = int((data['hsv_h']['prob'])*len(img_list))
 hsv_h_img = choice(img_list, total_prob, replace=False)
-generate_anot_RandomHSV(hsv_h_img, path_to_xml, hue=data['hsv_h']['hue'], path_to_save=path_to_save, name_id='hsv_h')
+generate_anot_RandomHSV(hsv_h_img, args['xml'], hue=data['hsv_h']['hue'], path_to_save=args['save'], name_id='hsv_h')
 
 # image HSV-Saturation augmentation
 total_prob = int((data['hsv_s']['prob'])*len(img_list))
 hsv_s_img = choice(img_list, total_prob, replace=False)
-generate_anot_RandomHSV(hsv_s_img, path_to_xml, saturation=data['hsv_s']['saturation'], path_to_save=path_to_save, name_id='hsv_s')
+generate_anot_RandomHSV(hsv_s_img, args['xml'], saturation=data['hsv_s']['saturation'], path_to_save=args['save'], name_id='hsv_s')
 
 # image HSV-Value (brightness) augmentation
 total_prob = int((data['hsv_v']['prob'])*len(img_list))
 hsv_v_img = choice(img_list, total_prob, replace=False)
-generate_anot_RandomHSV(hsv_v_img, path_to_xml, brightness=data['hsv_v']['brightness'], path_to_save=path_to_save, name_id='hsv_v')
+generate_anot_RandomHSV(hsv_v_img, args['xml'], brightness=data['hsv_v']['brightness'], path_to_save=args['save'], name_id='hsv_v')
 
 # Mixed image HSV augmentation (Mixed HSV-Hue, HSV-Saturation and HSV-Value (brightness))
 total_prob = int((data['hsv']['prob'])*len(img_list))
 hsv_img = choice(img_list, total_prob, replace=False)
-generate_anot_RandomHSV(hsv_img, path_to_xml, hue=data['hsv']['hue'], saturation=data['hsv']['saturation'], brightness=data['hsv']['brightness'], path_to_save=path_to_save, name_id='hsv')
+generate_anot_RandomHSV(
+    hsv_img, args['xml'], hue=data['hsv']['hue'], saturation=data['hsv']['saturation'], 
+    brightness=data['hsv']['brightness'], path_to_save=args['save'], name_id='hsv'
+)
 
 # image rotation augmentation
 total_prob = int((data['degrees']['prob'])*len(img_list))
 rot_img = choice(img_list, total_prob, replace=False)
-generate_anot_Rotate(rot_img, path_to_xml, path_to_save, 'rot', data['degrees']['deg'])
+generate_anot_Rotate(rot_img, args['xml'], args['save'], 'rot', data['degrees']['deg'])
 
 # image Random rotation augmentation
 total_prob = int((data['degrees_random']['prob'])*len(img_list))
 rot_img = choice(img_list, total_prob, replace=False)
-generate_anot_RandomRotate(rot_img, path_to_xml, path_to_save, 'rot_random', data['degrees_random']['deg'])
+generate_anot_RandomRotate(rot_img, args['xml'], args['save'], 'rot_random', data['degrees_random']['deg'])
 
 # image Translate augmentation
 total_prob = int((data['translate']['prob'])*len(img_list))
 rot_img = choice(img_list, total_prob, replace=False)
-generate_anot_Translate(rot_img, path_to_xml, path_to_save, 'trans', data['translate']['translate_x'], data['translate']['translate_y'])
+generate_anot_Translate(rot_img, args['xml'], args['save'], 'trans', data['translate']['translate_x'], data['translate']['translate_y'])
 
 # image Random Translate augmentation
 total_prob = int((data['translate_random']['prob'])*len(img_list))
 rot_img = choice(img_list, total_prob, replace=False)
-generate_anot_RandomTranslate(rot_img, path_to_xml, path_to_save, 'trans_random', data['translate_random']['translate'])
+generate_anot_RandomTranslate(rot_img, args['xml'], args['save'], 'trans_random', data['translate_random']['translate'])
 
 # image Scale augmentation
 total_prob = int((data['scale']['prob'])*len(img_list))
 rot_img = choice(img_list, total_prob, replace=False)
-generate_anot_Scale(rot_img, path_to_xml, path_to_save, 'scale', data['scale']['scale_x'], data['scale']['scale_y'])
+generate_anot_Scale(rot_img, args['xml'], args['save'], 'scale', data['scale']['scale_x'], data['scale']['scale_y'])
 
 # image Random Scale augmentation
 total_prob = int((data['scale_random']['prob'])*len(img_list))
 rot_img = choice(img_list, total_prob, replace=False)
-generate_anot_RandomScale(rot_img, path_to_xml, path_to_save, 'scale_random', data['scale_random']['scale'])
+generate_anot_RandomScale(rot_img, args['xml'], args['save'], 'scale_random', data['scale_random']['scale'])
 
 # image Shear augmentation
 total_prob = int((data['shear']['prob'])*len(img_list))
 rot_img = choice(img_list, total_prob, replace=False)
-generate_anot_Shear(rot_img, path_to_xml, path_to_save, 'shear', data['shear']['shear'])
+generate_anot_Shear(rot_img, args['xml'], args['save'], 'shear', data['shear']['shear'])
 
 # image Random Shear augmentation
 total_prob = int((data['shear_random']['prob'])*len(img_list))
 rot_img = choice(img_list, total_prob, replace=False)
-generate_anot_RandomShear(rot_img, path_to_xml, path_to_save, 'shear_random', data['shear_random']['shear'])
+generate_anot_RandomShear(rot_img, args['xml'], args['save'], 'shear_random', data['shear_random']['shear'])
 
 # image flip up-down augmentation
 total_prob = int((data['flipud'])*len(img_list))
 rot_img = choice(img_list, total_prob, replace=False)
-generate_anot_flipud(rot_img, path_to_xml, path_to_save, 'flipud')
+generate_anot_flipud(rot_img, args['xml'], args['save'], 'flipud')
 
 # image flip left-right augmentation
 total_prob = int((data['fliplr'])*len(img_list))
 rot_img = choice(img_list, total_prob, replace=False)
-generate_anot_fliplr(rot_img, path_to_xml, path_to_save, 'fliplr')
+generate_anot_fliplr(rot_img, args['xml'], args['save'], 'fliplr')
 
