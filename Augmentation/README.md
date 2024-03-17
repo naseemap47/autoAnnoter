@@ -25,6 +25,14 @@ Augument your annotation files (Object detection) PASCAL VOC (XML) or YOLO (TXT)
   `-s`, `--save` : path to save XML Augmentation <br>
   `-y`, `--yaml` : path to aug yaml file
 
+**Example:**
+```sh
+python3 Augmentation/xml_aug.py -i path_to/images -x path_to/xml_labels -s path_to_save -y path_to_aug_yaml
+
+# Example
+python3 Augmentation/xml_aug.py -i Augmentation/sample/images -x Augmentation/sample/labels -s Augmentation/sample/Aug -y Augmentation/default.yaml
+```
+
 ## YOLO Augmentation (TXT)
 ### 2. txt_aug.py:
 **Arguments:**
@@ -34,6 +42,13 @@ Augument your annotation files (Object detection) PASCAL VOC (XML) or YOLO (TXT)
   `-s`, `--save` : path to save YOLO(txt) Augmentation <br>
   `-y`, `--yaml` : path to aug yaml file
 
+**Example:**
+```sh
+python3 Augmentation/txt_aug.py -i path_to/images -t path_to/txt_labels -s path_to_save -y path_to_aug_yaml
+
+# Example
+python3 Augmentation/txt_aug.py -i Augmentation/sample/images -t Augmentation/sample/labels -s Augmentation/sample/Aug -y Augmentation/default.yaml
+```
 
 ## Augmentation YAML
 sample Augmentation YAML file: [default.yaml](https://github.com/naseemap47/autoAnnoter/blob/aug/Augmentation/default.yaml)
