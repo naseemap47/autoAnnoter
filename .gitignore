@@ -137,3 +137,7 @@ GroundingDINO/groundingdino/version.py
 *.jpg
 *.png
 *.txt
+
+# Annotations
+*.xml
+*.txt
