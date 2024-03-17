@@ -6,7 +6,7 @@ import numpy as np
 from tools.tool_utils import get_xml, write_xml
 
 
-def generate_anot_RandomHSV(image_list:list, path_to_labels:str, path_to_save:str, name_id:str, hue=None, saturation=None, brightness=None):
+def generate_anotX_RandomHSV(image_list:list, path_to_labels:str, path_to_save:str, name_id:str, hue=None, saturation=None, brightness=None):
     for img_path in image_list:
         img_name = os.path.split(img_path)[1]
         img = cv2.imread(img_path)
@@ -27,7 +27,7 @@ def generate_anot_RandomHSV(image_list:list, path_to_labels:str, path_to_save:st
                 write_xml(img_path, bbox_aug, class_list, path_to_xml_save)
 
 
-def generate_anot_Rotate(image_list:list, path_to_labels:str, path_to_save:str, name_id:str, angle:int):
+def generate_anotX_Rotate(image_list:list, path_to_labels:str, path_to_save:str, name_id:str, angle:int):
     for img_path in image_list:
         img_name = os.path.split(img_path)[1]
         img = cv2.imread(img_path)
@@ -48,7 +48,7 @@ def generate_anot_Rotate(image_list:list, path_to_labels:str, path_to_save:str, 
                 write_xml(img_path, bbox_aug, class_list, path_to_xml_save)
 
 
-def generate_anot_RandomRotate(image_list:list, path_to_labels:str, path_to_save:str, name_id:str, angle:int):
+def generate_anotX_RandomRotate(image_list:list, path_to_labels:str, path_to_save:str, name_id:str, angle:int):
     for img_path in image_list:
         img_name = os.path.split(img_path)[1]
         img = cv2.imread(img_path)
@@ -69,7 +69,7 @@ def generate_anot_RandomRotate(image_list:list, path_to_labels:str, path_to_save
                 write_xml(img_path, bbox_aug, class_list, path_to_xml_save)
 
 
-def generate_anot_Translate(image_list:list, path_to_labels:str, path_to_save:str, name_id:str, translate_x:float, translate_y:float):
+def generate_anotX_Translate(image_list:list, path_to_labels:str, path_to_save:str, name_id:str, translate_x:float, translate_y:float):
     for img_path in image_list:
         img_name = os.path.split(img_path)[1]
         img = cv2.imread(img_path)
@@ -90,7 +90,7 @@ def generate_anot_Translate(image_list:list, path_to_labels:str, path_to_save:st
                 write_xml(img_path, bbox_aug, class_list, path_to_xml_save)
 
 
-def generate_anot_RandomTranslate(image_list:list, path_to_labels:str, path_to_save:str, name_id:str, translate:float):
+def generate_anotX_RandomTranslate(image_list:list, path_to_labels:str, path_to_save:str, name_id:str, translate:float):
     for img_path in image_list:
         img_name = os.path.split(img_path)[1]
         img = cv2.imread(img_path)
@@ -111,7 +111,7 @@ def generate_anot_RandomTranslate(image_list:list, path_to_labels:str, path_to_s
                 write_xml(img_path, bbox_aug, class_list, path_to_xml_save)
 
 
-def generate_anot_Scale(image_list:list, path_to_labels:str, path_to_save:str, name_id:str, scale_x:float, scale_y:float):
+def generate_anotX_Scale(image_list:list, path_to_labels:str, path_to_save:str, name_id:str, scale_x:float, scale_y:float):
     for img_path in image_list:
         img_name = os.path.split(img_path)[1]
         img = cv2.imread(img_path)
@@ -132,7 +132,7 @@ def generate_anot_Scale(image_list:list, path_to_labels:str, path_to_save:str, n
                 write_xml(img_path, bbox_aug, class_list, path_to_xml_save)
 
 
-def generate_anot_RandomScale(image_list:list, path_to_labels:str, path_to_save:str, name_id:str, scale:float):
+def generate_anotX_RandomScale(image_list:list, path_to_labels:str, path_to_save:str, name_id:str, scale:float):
     for img_path in image_list:
         img_name = os.path.split(img_path)[1]
         img = cv2.imread(img_path)
@@ -153,7 +153,7 @@ def generate_anot_RandomScale(image_list:list, path_to_labels:str, path_to_save:
                 write_xml(img_path, bbox_aug, class_list, path_to_xml_save)
 
 
-def generate_anot_Shear(image_list:list, path_to_labels:str, path_to_save:str, name_id:str, shear:float):
+def generate_anotX_Shear(image_list:list, path_to_labels:str, path_to_save:str, name_id:str, shear:float):
     for img_path in image_list:
         img_name = os.path.split(img_path)[1]
         img = cv2.imread(img_path)
@@ -174,7 +174,7 @@ def generate_anot_Shear(image_list:list, path_to_labels:str, path_to_save:str, n
                 write_xml(img_path, bbox_aug, class_list, path_to_xml_save)
 
 
-def generate_anot_RandomShear(image_list:list, path_to_labels:str, path_to_save:str, name_id:str, shear:float):
+def generate_anotX_RandomShear(image_list:list, path_to_labels:str, path_to_save:str, name_id:str, shear:float):
     for img_path in image_list:
         img_name = os.path.split(img_path)[1]
         img = cv2.imread(img_path)
@@ -195,7 +195,7 @@ def generate_anot_RandomShear(image_list:list, path_to_labels:str, path_to_save:
                 write_xml(img_path, bbox_aug, class_list, path_to_xml_save)
 
 
-def generate_anot_flipud(image_list:list, path_to_labels:str, path_to_save:str, name_id:str):
+def generate_anotX_flipud(image_list:list, path_to_labels:str, path_to_save:str, name_id:str):
     for img_path in image_list:
         img_name = os.path.split(img_path)[1]
         img = cv2.imread(img_path)
@@ -216,7 +216,7 @@ def generate_anot_flipud(image_list:list, path_to_labels:str, path_to_save:str, 
                 write_xml(img_path, bbox_aug, class_list, path_to_xml_save)
 
 
-def generate_anot_fliplr(image_list:list, path_to_labels:str, path_to_save:str, name_id:str):
+def generate_anotX_fliplr(image_list:list, path_to_labels:str, path_to_save:str, name_id:str):
     for img_path in image_list:
         img_name = os.path.split(img_path)[1]
         img = cv2.imread(img_path)
