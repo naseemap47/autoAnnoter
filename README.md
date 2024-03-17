@@ -14,6 +14,7 @@ autoAnnoter: Its a tool to auto annotate data using a exisiting model
 - [create_yolo.py](https://github.com/naseemap47/autoAnnoter/tree/aug/tools#8-create_yolopy)
 - [yolo_to_kitti.py](https://github.com/naseemap47/autoAnnoter/tree/aug/tools#9-yolo_to_kittipy)
 - [yolo_to_json.py](https://github.com/naseemap47/autoAnnoter/tree/aug/tools#10-yolo_to_jsonpy)
+- [split_data.py](https://github.com/naseemap47/autoAnnoter/tree/aug/tools#11-split_datapy)
 
 ### 🛠️ Augumentaion
 Augument your annotation files (Object detection) PASCAL VOC (XML) or YOLO (TXT)

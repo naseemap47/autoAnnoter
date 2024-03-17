@@ -221,3 +221,24 @@ apple
 ```
 python3 tools/yolo_to_json.py -i path_to/imageDir -t path_to/txt_Dir -c path_to/classes.txt
 ```
+### 11. split_data.py:
+Split data into Train and Test based on ratio to YOLO Dir format
+
+<details>
+  <summary>Args</summary>
+  
+  `-i`, `--image` : path to image/dir <br>
+  `-l`, `--label` : path to labels/dir <br>
+  `-s`, `--save` : path to save splited data <br>
+  `-e`, `--exe` : label exe to identify labels ('txt', 'xml') <br>
+  `r`, `ratio` : Test split ratio (0.0-1.0)
+  
+</details>
+
+```sh
+python3 tools/split_data.py -i path_to/imageDir -l path_to/labels_Dir -s path_to/split_data -e 'labels_exe' -r split_ratio
+
+# Example:
+python3 tools/split_data.py -i Data//images -l Data/labels -s data_to_train -e 'txt' -r 0.2
+
+```
