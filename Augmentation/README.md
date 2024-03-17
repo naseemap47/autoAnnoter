@@ -1,4 +1,4 @@
-## 🛠️ Augumentaion
+# 🛠️ Augumentaion
 
 Augument your annotation files (Object detection) PASCAL VOC (XML) or YOLO (TXT)
 
@@ -15,7 +15,27 @@ Augument your annotation files (Object detection) PASCAL VOC (XML) or YOLO (TXT)
 - RandomHSV
 - Sequence
 
-### Augmentation YAML
+
+## XML Augmentation
+### 1. xml_aug.py:
+**Arguments:**
+  
+  `-i`, `--image` : path to image/dir <br>
+  `-x`, `--xml` : path to xml/dir <br>
+  `-s`, `--save` : path to save XML Augmentation <br>
+  `-y`, `--yaml` : path to aug yaml file
+
+## YOLO Augmentation (TXT)
+### 2. txt_aug.py:
+**Arguments:**
+  
+  `-i`, `--image` : path to image/dir <br>
+  `-t`, `--txt` : path to txt/dir <br>
+  `-s`, `--save` : path to save YOLO(txt) Augmentation <br>
+  `-y`, `--yaml` : path to aug yaml file
+
+
+## Augmentation YAML
 sample Augmentation YAML file: [default.yaml](https://github.com/naseemap47/autoAnnoter/Augmentation/default.yaml)
 ```yaml
 # ----------------- Augmentation Parameters -----------------
@@ -87,12 +107,3 @@ flipud: 0.0 # (float) image flip up-down (probability)
 fliplr: 0.5 # (float) image flip left-right (probability)
 
 ```
-
-### XML Augmentation
-### 1. xml_aug.py:
-**Arg:**
-  
-  `-i`, `--image` : path to image/dir <br>
-  `-x`, `--xml` : path to xml/dir <br>
-  `-s`, `--save` : path to save XML Augmentation <br>
-  `-y`, `--yaml` : path to aug yaml file
