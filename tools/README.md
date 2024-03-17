@@ -230,7 +230,7 @@ Split data into Train and Test based on ratio to YOLO Dir format
   `-i`, `--image` : path to image/dir <br>
   `-l`, `--label` : path to labels/dir <br>
   `-s`, `--save` : path to save splited data <br>
-  `-e`, `--exe` : label exe to identify labels ('txt', 'xml') <br>
+  `-e`, `--exe` : label exe to identify labels (`txt`, `xml`) <br>
   `r`, `ratio` : Test split ratio (0.0-1.0)
   
 </details>
