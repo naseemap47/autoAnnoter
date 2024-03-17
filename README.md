@@ -3,6 +3,23 @@
 
 autoAnnoter: Its a tool to auto annotate data using a exisiting model
 
+### 🛠️ Tools
+- [partition_dataset.py](https://github.com/naseemap47/autoAnnoter/tree/aug/tools#1-partition_datasetpy)
+- [txt_to_xml.py](https://github.com/naseemap47/autoAnnoter/tree/aug/tools#2-txt_to_xmlpy)
+- [xml_to_txt.py](https://github.com/naseemap47/autoAnnoter/tree/aug/tools#3-xml_to_txtpy)
+- [xml_neg_annotation.py](https://github.com/naseemap47/autoAnnoter/tree/aug/tools#4-xml_neg_annotationpy)
+- [find_oneClass_from_xml.py](https://github.com/naseemap47/autoAnnoter/tree/aug/tools#5-find_oneclass_from_xmlpy)
+- [vis_xml.py](https://github.com/naseemap47/autoAnnoter/tree/aug/tools#6-vis_xmlpy)
+- [vis_txt.py](https://github.com/naseemap47/autoAnnoter/tree/aug/tools#7-vis_txtpy)
+- [create_yolo.py](https://github.com/naseemap47/autoAnnoter/tree/aug/tools#8-create_yolopy)
+- [yolo_to_kitti.py](https://github.com/naseemap47/autoAnnoter/tree/aug/tools#9-yolo_to_kittipy)
+- [yolo_to_json.py](https://github.com/naseemap47/autoAnnoter/tree/aug/tools#10-yolo_to_jsonpy)
+
+### 🛠️ Augumentaion
+Augument your annotation files (Object detection) PASCAL VOC (XML) or YOLO (TXT)
+- [XML Augmentation](https://github.com/naseemap47/autoAnnoter/tree/aug/Augmentation#xml-augmentation)
+- [YOLO Augmentation (TXT)](https://github.com/naseemap47/autoAnnoter/tree/aug/Augmentation#yolo-augmentation-txt)
+
 ## Auto annotate any class 🚀 New Update (17-08-2023)
 ### 🥳 Auto Annotate using OWL-ViT Model
 We can auto annotate **any class** on our data using new OWL-ViT model.<br>
