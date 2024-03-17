@@ -1,6 +1,6 @@
-from data_aug import RandomHorizontalFlip, RandomScale, RandomTranslate, \
+from data_aug import RandomScale, RandomTranslate, \
     RandomRotate, RandomShear, Resize, RandomHSV, Sequence, Rotate, \
-    Translate, Scale, Shear
+    Translate, Scale, Shear, HorizontalFlip
 from numpy.random import choice
 import glob
 import os
@@ -221,6 +221,27 @@ def generate_anot_flipud(image_list:list, path_to_labels:str, path_to_save:str, 
                 write_xml(img_path, bbox_aug, class_list, path_to_xml_save)
 
 
+def generate_anot_fliplr(image_list:list, path_to_labels:str, path_to_save:str, name_id:str):
+    for img_path in image_list:
+        img_name = os.path.split(img_path)[1]
+        img = cv2.imread(img_path)
+
+        # Read XML
+        xml_path = f"{path_to_labels}/{os.path.splitext(img_name)[0]}.xml"
+        bbox_list, class_list = get_xml(xml_path)
+        if len(bbox_list) > 0:
+            # Augumentation
+            bbox_list = np.array(bbox_list, dtype=np.float64)
+            img_aug, bbox_aug = HorizontalFlip()(img.copy(), bbox_list.copy())
+            if len(bbox_aug) > 0:
+                # save image
+                cv2.imwrite(f"{path_to_save}/{os.path.splitext(img_name)[0]}_{name_id}.jpg", img_aug)
+                # Save XML
+                xml_name = f"{os.path.splitext(img_name)[0]}_{name_id}.xml"
+                path_to_xml_save = f"{path_to_save}/{xml_name}"
+                write_xml(img_path, bbox_aug, class_list, path_to_xml_save)
+
+
 ap = argparse.ArgumentParser()
 ap.add_argument("-i", "--image", type=str, required=True,
                 help="path to image/dir")
@@ -309,4 +330,9 @@ generate_anot_RandomShear(rot_img, path_to_xml, path_to_save, 'shear_random', da
 total_prob = int((data['flipud'])*len(img_list))
 rot_img = choice(img_list, total_prob, replace=False)
 generate_anot_flipud(rot_img, path_to_xml, path_to_save, 'flipud')
+
+# image flip left-right augmentation
+total_prob = int((data['fliplr'])*len(img_list))
+rot_img = choice(img_list, total_prob, replace=False)
+generate_anot_fliplr(rot_img, path_to_xml, path_to_save, 'fliplr')
 
