@@ -1,5 +1,5 @@
-from data_aug import RandomHorizontalFlip, RandomScale, RandomTranslate, \
-    RandomRotate, RandomShear, Resize, RandomHSV, Sequence, Rotate
+from data_aug import RandomHorizontalFlip, HorizontalFlip, RandomScale, Scale, RandomTranslate, Translate,\
+                    RandomRotate, Rotate, RandomShear, Shear, Resize, RandomHSV, Sequence
 import glob
 import os
 import cv2
@@ -7,6 +7,7 @@ import argparse
 from tool_utils import get_txt, write_txt
 import numpy as np
 from bbox_util import rotate_im
+import yaml
 
 
 ap = argparse.ArgumentParser()
@@ -33,9 +34,9 @@ img_full_list = glob.glob(f'{path_to_img}/*.jpeg') + \
 img_list = sorted(img_full_list)
 # img_aug = np.zeros((2, 2, 3))
 # img_aug = None
-# c = 0
+c = 0
 for txt_path, img_path in zip(txt_list, img_list):
-    # c += 1
+    c += 1
     # Locations
     folder_name, img_name = os.path.split(img_path)
     bbox_list, class_list = get_txt(txt_path, img_path)
