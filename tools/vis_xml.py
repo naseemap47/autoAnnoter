@@ -72,7 +72,7 @@ for i in range(count):
 
 # Save Image
 if args['save']:
-    cv2.imwrite('output.jpg', img_file)
+    cv2.imwrite(f"{args['img']}_output.jpg", img_file)
 
 cv2.imshow('img', img_file)
 if cv2.waitKey(0) & 0xFF == ord('q'):
