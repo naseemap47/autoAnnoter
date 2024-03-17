@@ -37,6 +37,11 @@ translate:
   translate_y: 0.2
   prob: 0.1
 
+# (float) image Random translation (+/- fraction)
+translate_random:
+  translate: 0.2
+  prob: 0.1
+
 scale: 0.5 # (float) image scale (+/- gain)
 shear: 0.0 # (float) image shear (+/- deg)
 perspective: 0.0 # (float) image perspective (+/- fraction), range 0-0.001
