@@ -36,7 +36,7 @@ Augument your annotation files (Object detection) PASCAL VOC (XML) or YOLO (TXT)
 
 
 ## Augmentation YAML
-sample Augmentation YAML file: [default.yaml](https://github.com/naseemap47/autoAnnoter/Augmentation/default.yaml)
+sample Augmentation YAML file: [default.yaml](https://github.com/naseemap47/autoAnnoter/blob/aug/Augmentation/default.yaml)
 ```yaml
 # ----------------- Augmentation Parameters -----------------
 # image HSV-Hue augmentation
