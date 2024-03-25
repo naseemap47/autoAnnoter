@@ -1,4 +1,4 @@
-from anot_utils import save_yolo
+from anot_utils import save_yolo, save_xml
 from ultralytics import YOLO
 import argparse
 import cv2
@@ -24,6 +24,9 @@ ap.add_argument("-m", "--model", type=str,
                 ],
                 required= True,
                 help="choose model type")
+ap.add_argument("-f", "--format", type=float,
+                choices=['txt', 'xml'],
+                help="annotation format")
 args = vars(ap.parse_args())
 
 # Read prompt.json
@@ -46,7 +49,7 @@ model.set_classes(class_names)
 for i in tqdm(range(len(img_list))):
     folder_name, file_name = os.path.split(img_list[i])
     img = cv2.imread(img_list[i])
-    h, w, _ = img.shape
+    h, w, c = img.shape
     # Prediction
     class_list = []
     bbox_list = []
@@ -61,13 +64,26 @@ for i in tqdm(range(len(img_list))):
             xmax = int(bbox[2])
             ymax = int(bbox[3])
 
-            class_list.append(int(cs)+1)
+            if args['format'] == 'txt':
+                class_list.append(int(cs)+1)
+            elif args['format'] == 'xml':
+                class_list.append(int(cs))
             bbox_list.append([xmin, ymin, xmax, ymax])
+    
+    # YOLO (TXT) Annotation
+    if args['format'] == 'txt':
+        save_yolo(folder_name, file_name, w, h, bbox_list, class_list)
+    # PASCAL VOC (XML) Annotation
+    elif args['format'] == 'xml':
+        save_xml(
+            folder_name, file_name, img_list[i], w, h, c, 
+            bbox_list, class_list, class_names
+        )
 
-    save_yolo(folder_name, file_name, w, h, bbox_list, class_list)
-
-# Save Labe Map
-with open(os.path.join(args['data'], 'classes.txt'), "w") as output:
-    for i in class_names:
-        output.write(f'{i}\n')
-print(f"[INFO] Saved Labelmap to: {os.path.join(args['data'], 'classes.txt')}")
+if args['format'] == 'txt':
+    # Save Labe Map
+    with open(os.path.join(args['data'], 'classes.txt'), "w") as output:
+        for i in class_names:
+            output.write(f'{i}\n')
+    print(f"[INFO] Saved Labelmap to: {os.path.join(args['data'], 'classes.txt')}")
+print('[INFO] YOLO-World autoAnnotation completed ...')
