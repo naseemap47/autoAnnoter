@@ -141,3 +141,9 @@ GroundingDINO/groundingdino/version.py
 # Annotations
 *.xml
 *.txt
+
+# Model
+*.pt
+
+# Video
+*.mp4
