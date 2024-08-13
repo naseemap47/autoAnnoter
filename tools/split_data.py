@@ -4,6 +4,7 @@ import random
 import shutil
 import argparse
 from tqdm import tqdm
+import sys
 
 
 ap = argparse.ArgumentParser()
@@ -20,16 +21,19 @@ ap.add_argument("-r", "--ratio", type=float, default=0.2,
                 help="test ratio")
 args = vars(ap.parse_args())
 
-os.makedirs(f"{args['save']}/train", exist_ok=True)
-os.makedirs(f"{args['save']}/valid", exist_ok=True)
+
+allFiles = glob.glob(f"{args['image']}/*.jpg") + glob.glob(f"{args['image']}/*.png") + glob.glob(f"{args['image']}/*.jpeg")
+random.shuffle(allFiles)
+testNum = int(len(allFiles) * args['ratio'])
+if testNum == 0:
+    sys.exit("[WARNING] Less Data")
+
+# Create Dir for saving
 os.makedirs(f"{args['save']}/train/images", exist_ok=True)
 os.makedirs(f"{args['save']}/valid/images", exist_ok=True)
 os.makedirs(f"{args['save']}/train/labels", exist_ok=True)
 os.makedirs(f"{args['save']}/valid/labels", exist_ok=True)
 
-allFiles = glob.glob(f"{args['image']}/*.jpg") + glob.glob(f"{args['image']}/*.png") + glob.glob(f"{args['image']}/*.jpeg")
-random.shuffle(allFiles)
-testNum = int(len(allFiles) * args['ratio'])
 testFileLst = []
 while True:
     ap = random.choice(allFiles)
