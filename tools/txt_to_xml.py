@@ -20,21 +20,19 @@ path_to_txt = args['txt']
 path_to_class = args['classes']
 
 DEFAULT_ENCODING = 'utf-8'
-txt_list = sorted(glob.glob(f'{path_to_txt}/*.txt'))
-img_full_list = glob.glob(f'{path_to_img}/*.jpeg') + \
+img_list = glob.glob(f'{path_to_img}/*.jpeg') + \
                 glob.glob(f'{path_to_img}/*.jpg')  + \
                 glob.glob(f'{path_to_img}/*.png')
 
-img_list = sorted(img_full_list)
 class_names = open(f'{path_to_class}', 'r+').read().splitlines()
-
-for txt, img in zip(txt_list, img_list):
+for img in img_list:
     # Locations
     folder_name, file_name = os.path.split(img)
     path_txt = img
     img_file = cv2.imread(img)
     height_n, width_n, depth_n = img_file.shape
-    
+    name = os.path.splitext(os.path.split(img)[1])[0]
+    txt = f"{path_to_txt}/{name}.txt"
     txt_file = open(txt, 'r+')
     lines = txt_file.read().splitlines()
     obj_list = []
