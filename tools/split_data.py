@@ -26,8 +26,8 @@ os.makedirs(f"{args['save']}/valid/images", exist_ok=True)
 os.makedirs(f"{args['save']}/train/labels", exist_ok=True)
 os.makedirs(f"{args['save']}/valid/labels", exist_ok=True)
 
-allFiles = glob.glob(f"{args['image']}/*.jpg")
-
+allFiles = glob.glob(f"{args['image']}/*.jpg") + glob.glob(f"{args['image']}/*.png") + glob.glob(f"{args['image']}/*.jpeg")
+random.shuffle(allFiles)
 testNum = int(len(allFiles) * args['ratio'])
 testFileLst = []
 while True:
