@@ -3,6 +3,7 @@ import glob
 import random
 import shutil
 import argparse
+from tqdm import tqdm
 
 
 ap = argparse.ArgumentParser()
@@ -37,9 +38,11 @@ while True:
         if len(testFileLst) == testNum:
             break
 
-trainFileLst = list(set(testFileLst).symmetric_difference(set(allFiles)))
-
-for testFile in testFileLst:
+# Test Data
+print(f"Test Data: {len(testFileLst)}/{len(allFiles)}")
+for i in tqdm(range(len(testFileLst))):
+    # for testFile in testFileLst:
+    testFile = testFileLst[i]
     img_path, img_name = os.path.split(testFile)
     # image
     shutil.copy(testFile, f"{args['save']}/valid/images")
@@ -47,8 +50,14 @@ for testFile in testFileLst:
     name = os.path.splitext(img_name)[0]
     label_path = f"{args['label']}/{name}.{args['exe']}"
     shutil.copy(label_path, f"{args['save']}/valid/labels")
+print("[COMPLETED] Test Data")
 
-for trainFile in trainFileLst:
+# Train Data
+trainFileLst = list(set(testFileLst).symmetric_difference(set(allFiles)))
+print(f"Train Data: {len(trainFileLst)}/{len(allFiles)}")
+for i in tqdm(range(len(trainFileLst))):
+    # for trainFile in trainFileLst:
+    trainFile = trainFileLst[i]
     img_path, img_name = os.path.split(trainFile)
     # image
     shutil.copy(trainFile, f"{args['save']}/train/images")
@@ -56,3 +65,4 @@ for trainFile in trainFileLst:
     name = os.path.splitext(img_name)[0]
     label_path = f"{args['label']}/{name}.{args['exe']}"
     shutil.copy(label_path, f"{args['save']}/train/labels")
+print("[COMPLETED] Train Data")
