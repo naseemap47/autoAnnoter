@@ -1,5 +1,5 @@
-super-gradients
-ultralytics
+super-gradients==3.2.0
+ultralytics>=8.1.34
 lxml
 onnxruntime
 streamlit
