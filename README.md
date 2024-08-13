@@ -141,7 +141,7 @@ To auto-annotate **YOLO-World** model, we need to give text prompt that correspo
 
 **Example:**
 ```
-python3 owlvit.py --data images/ --prompt prompt.json --conf 0.8 \
+python3 yolo_world.py --data images/ --prompt prompt.json --conf 0.8 \
                   --model yolov8m-worldv2.pt --format txt
 ```
 
